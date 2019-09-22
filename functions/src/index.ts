@@ -1,22 +1,24 @@
 import * as functions from 'firebase-functions';
 import MicroGear = require('microgear');
 
+const NETPIE_CACHE_PATH = '/tmp/microgear-g1.cache';
+
 export const ping = functions
 	.region('asia-east2')
 	.https.onRequest((request, response) => {
 		response.send('pong');
 	});
 
-function connectNetpie(): Promise<any> {
+function connectNetpie(): Promise<MicroGear.Microgear> {
 	const microgear = MicroGear.create({
 		key: functions.config().netpie.key,
 		secret: functions.config().netpie.secret,
 		alias: 'functions'
 	});
-	microgear.setCachePath('/tmp/microgear-g1.cache');
+	microgear.setCachePath(NETPIE_CACHE_PATH);
 
 	return new Promise((resolve, reject) => {
-		microgear.on('connected', function() {
+		microgear.on('connected', () => {
 			resolve(microgear);
 		});
 
@@ -24,9 +26,9 @@ function connectNetpie(): Promise<any> {
 	});
 }
 
-function disconnectNetpie(microgear: any): Promise<void> {
+function disconnectNetpie(microgear: MicroGear.Microgear): Promise<void> {
 	return new Promise((resolve, reject) => {
-		microgear.resetToken(function(result: any) {
+		microgear.resetToken((result: any) => {
 			resolve();
 		});
 	});
