@@ -50,11 +50,17 @@ export const testNetpie = functions
 		response.send('Test Netpie!');
 	});
 
-// export const scheduledFunctionCrontab = functions
-// 	.region('asia-east2')
-// 	.pubsub.schedule('*/1 * * * *')
-// 	.onRun(context => {
-// 		console.log('This will be run every 1 minute!');
+export const iotSensorSyncronizationCrontab = functions
+	.region('asia-east2')
+	.pubsub.schedule('*/1 * * * *')
+	.onRun(async context => {
+		console.log('IoT Syncronization, this will be run every 1 minute!');
 
-// 		return null;
-// 	});
+		const microgear = await connectNetpie();
+
+		const timeISOString = new Date().toISOString();
+		microgear.publish(NETPIE_IOT_SYNC_TOPIC, timeISOString);
+
+		await disconnectNetpie(microgear);
+		return null;
+	});
