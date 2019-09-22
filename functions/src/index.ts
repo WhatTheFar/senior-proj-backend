@@ -1,6 +1,12 @@
 import * as functions from 'firebase-functions';
 import MicroGear = require('microgear');
 
+/**
+ *	Constant for NETPIE
+ */
+const NETPIE_IOT_SYNC_TOPIC = '/iot';
+const NETPIE_TEST_TOPIC = '/test';
+
 const NETPIE_CACHE_PATH = '/tmp/microgear-g1.cache';
 
 export const ping = functions
@@ -38,7 +44,7 @@ export const testNetpie = functions
 	.region('asia-east2')
 	.https.onRequest(async (request, response) => {
 		const microgear = await connectNetpie();
-		microgear.publish('/test', 'hi');
+		microgear.publish(NETPIE_TEST_TOPIC, 'hi');
 		await disconnectNetpie(microgear);
 
 		response.send('Test Netpie!');
