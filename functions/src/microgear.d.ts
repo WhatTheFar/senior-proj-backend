@@ -1,6 +1,12 @@
 declare module 'microgear' {
 	export interface Microgear {
 		/**
+		 *
+		 * @param {string} appid - a group of application that microgear will connect to.
+		 */
+		connect(appid: string): void;
+
+		/**
 		 * microgear can set its own alias, which to be used for others make a function call chat().
 		 * The alias will appear on the key management portal of netpie.io .
 		 *
