@@ -56,7 +56,7 @@ declare module 'microgear' {
 		 *          microgear.connect(APPID);
 		 *      });
 		 */
-		resetToken(callback: (result: any) => {}): void;
+		resetToken(callback: (result: any) => void): void;
 		/**
 		 * Enable or disable TLS. For microgear-nodejs, TLS is disabled by default.
 		 *
