@@ -22,6 +22,7 @@
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
+    "class-validator": "^0.10.0",
     "dotenv": "^8.1.0",
     "microgear": "^0.8.1",
     "nest-schedule": "^0.6.3",
