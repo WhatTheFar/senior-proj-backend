@@ -2,12 +2,6 @@ import { ConfigService } from '../config/config.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as MicroGear from 'microgear';
 
-/**
- * Constants for NETPIE
- */
-const NETPIE_IOT_SYNC_TOPIC = '/iot';
-const NETPIE_TEST_TOPIC = '/test';
-
 // const NETPIE_CACHE_PATH = '/tmp/microgear-g1.cache';
 // const NETPIE_CACHE_PATH = `${process.cwd()}/microgear-g1.cache`;
 
