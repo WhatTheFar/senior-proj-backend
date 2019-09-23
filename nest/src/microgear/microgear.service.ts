@@ -44,4 +44,8 @@ export class MicroGearService implements OnModuleInit {
       });
     });
   }
+
+  publish(topic: string, message: string) {
+    this.microgear.publish(topic, message);
+  }
 }
