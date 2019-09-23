@@ -35,4 +35,13 @@ export class ConfigService {
   getDatabasePassword(): string {
     return getEnvOrThrows('DB_PASSWORD');
   }
+  getNetpieAppID(): string {
+    return getEnvOrThrows('NETPIE_APPID');
+  }
+  getNetpieKey(): string {
+    return getEnvOrThrows('NETPIE_KEY');
+  }
+  getNetpieSecret(): string {
+    return getEnvOrThrows('NETPIE_SECRET');
+  }
 }
