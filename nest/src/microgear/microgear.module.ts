@@ -5,5 +5,6 @@ import { MicroGearService } from './microgear.service';
 @Module({
   imports: [ConfigModule],
   providers: [MicroGearService],
+  exports: [MicroGearService],
 })
 export class MicroGearModule {}
