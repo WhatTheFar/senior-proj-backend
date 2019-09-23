@@ -11,30 +11,36 @@ const env = {
   NETPIE_SECRET: 'secret',
 };
 
-const path = `${process.cwd()}/.env`;
-const pathOld = `${process.cwd()}/.env.old`;
+const path = `${process.cwd()}/.env.test`;
+// const pathOld = `${process.cwd()}/.env.old`;
 
 describe('ConfigService', () => {
   let service: ConfigService;
 
   beforeAll(() => {
-    if (fs.existsSync(path)) {
-      fs.renameSync(path, pathOld);
-    }
+    // if (fs.existsSync(path)) {
+    //   fs.renameSync(path, pathOld);
+    // }
 
     const envString = Object.entries(env)
       .map(([key, value]) => `${key}=${value}`)
       .join('\n');
+
     fs.writeFileSync(path, envString);
   });
 
   afterAll(() => {
-    fs.renameSync(pathOld, path);
+    // fs.renameSync(pathOld, path);
   });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConfigService],
+      providers: [
+        {
+          provide: ConfigService,
+          useValue: new ConfigService(path),
+        },
+      ],
     }).compile();
 
     service = module.get<ConfigService>(ConfigService);

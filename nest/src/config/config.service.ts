@@ -7,10 +7,9 @@ function getEnv(key: string) {
 
 export class ConfigService {
   private readonly envConfig: { [key: string]: string } = {};
-  constructor() {
-    const path = `${process.cwd()}/.env`;
-    if (fs.existsSync(path)) {
-      this.envConfig = dotenv.parse(fs.readFileSync(path), { debug: true });
+  constructor(filePath?: string) {
+    if (fs.existsSync(filePath)) {
+      this.envConfig = dotenv.parse(fs.readFileSync(filePath), { debug: true });
     }
   }
 
