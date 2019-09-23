@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  db:
+    image: mongo:4
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  backend:
+    image: senior-proj-backend
+    container_name: senior-proj-backend
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password

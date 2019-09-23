@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  db:
+    volumes:
+      - ./volumes/db:/data/db
+    ports:
+      - 27017:27017
+    command: '--smallfiles'
+
+  backend:
+    image: node:8
+    container_name: senior-proj-backend-dev
+    volumes:
+      - ./nest:/app
+    ports:
+      - 3000:3000
+    working_dir: /app
+    command: 'yarn start:dev'
