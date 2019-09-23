@@ -1,47 +1,48 @@
 import * as dotenv from 'dotenv';
+import * as fs from 'fs';
 
-function getEnv(key: string): string | null {
-  const value = process.env[key];
-  if (value) {
-    return value;
-  } else {
-    return null;
-  }
-}
-
-function getEnvOrThrows(key: string): string {
-  const value = getEnv(key);
-  if (value) {
-    return value;
-  } else {
-    throw new Error(`Unable to read "${key}" environment`);
-  }
+function getEnv(key: string) {
+  return process.env[key];
 }
 
 export class ConfigService {
+  private readonly envConfig: { [key: string]: string } = {};
   constructor() {
-    dotenv.config();
+    const path = `${process.cwd()}/.env`;
+    if (fs.existsSync(path)) {
+      this.envConfig = dotenv.parse(fs.readFileSync(path), { debug: true });
+    }
   }
 
-  get(key: string): string {
-    return getEnv(key);
+  get(key: string): string | undefined {
+    return this.envConfig[key] || getEnv(key);
   }
-  getDatabaseHostName(): string {
-    return getEnvOrThrows('DB_HOST');
+
+  getOrThrows(key: string): string | undefined {
+    const value = this.get(key);
+    if (value) {
+      return value;
+    } else {
+      throw new Error(`Unable to get "${key}" config`);
+    }
   }
-  getDatabaseUser(): string {
-    return getEnvOrThrows('DB_USER');
+
+  get databaseHostName(): string {
+    return this.getOrThrows('DB_HOST');
   }
-  getDatabasePassword(): string {
-    return getEnvOrThrows('DB_PASSWORD');
+  get databaseUser(): string {
+    return this.getOrThrows('DB_USER');
   }
-  getNetpieAppID(): string {
-    return getEnvOrThrows('NETPIE_APPID');
+  get databasePassword(): string {
+    return this.getOrThrows('DB_PASSWORD');
   }
-  getNetpieKey(): string {
-    return getEnvOrThrows('NETPIE_KEY');
+  get netpieAppID(): string {
+    return this.getOrThrows('NETPIE_APPID');
   }
-  getNetpieSecret(): string {
-    return getEnvOrThrows('NETPIE_SECRET');
+  get netpieKey(): string {
+    return this.getOrThrows('NETPIE_KEY');
+  }
+  get netpieSecret(): string {
+    return this.getOrThrows('NETPIE_SECRET');
   }
 }

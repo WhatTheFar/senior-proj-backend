@@ -11,15 +11,25 @@ const env = {
   NETPIE_SECRET: 'secret',
 };
 
+const path = `${process.cwd()}/.env`;
+const pathOld = `${process.cwd()}/.env.old`;
+
 describe('ConfigService', () => {
   let service: ConfigService;
 
-  beforeAll(async () => {
-    const path = `${process.cwd()}/.env`;
+  beforeAll(() => {
+    if (fs.existsSync(path)) {
+      fs.renameSync(path, pathOld);
+    }
+
     const envString = Object.entries(env)
       .map(([key, value]) => `${key}=${value}`)
       .join('\n');
     fs.writeFileSync(path, envString);
+  });
+
+  afterAll(() => {
+    fs.renameSync(pathOld, path);
   });
 
   beforeEach(async () => {
@@ -33,12 +43,12 @@ describe('ConfigService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
 
-    expect(service.getDatabaseHostName()).toEqual(env.DB_HOST);
-    expect(service.getDatabaseUser()).toEqual(env.DB_USER);
-    expect(service.getDatabasePassword()).toEqual(env.DB_PASSWORD);
+    expect(service.databaseHostName).toEqual(env.DB_HOST);
+    expect(service.databaseUser).toEqual(env.DB_USER);
+    expect(service.databasePassword).toEqual(env.DB_PASSWORD);
 
-    expect(service.getNetpieAppID()).toEqual(env.NETPIE_APPID);
-    expect(service.getNetpieKey()).toEqual(env.NETPIE_KEY);
-    expect(service.getNetpieSecret()).toEqual(env.NETPIE_SECRET);
+    expect(service.netpieAppID).toEqual(env.NETPIE_APPID);
+    expect(service.netpieKey).toEqual(env.NETPIE_KEY);
+    expect(service.netpieSecret).toEqual(env.NETPIE_SECRET);
   });
 });
