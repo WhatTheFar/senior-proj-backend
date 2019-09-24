@@ -25,13 +25,18 @@ export class MicroGearService implements OnModuleInit {
     this.microgear = microgear;
 
     return new Promise((resolve, reject) => {
-      microgear.on('connected', () => {
+      const connected = () => {
+        microgear.removeListener('connected', connected);
+        microgear.removeListener('error', error);
         resolve(microgear);
-      });
-
-      microgear.on('error', err => {
+      };
+      const error = (err: Error) => {
+        microgear.removeListener('connected', connected);
+        microgear.removeListener('error', error);
         reject(err);
-      });
+      };
+      microgear.on('connected', connected);
+      microgear.on('error', error);
 
       microgear.connect(this.configService.netpieAppID);
     });

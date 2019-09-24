@@ -1,5 +1,9 @@
+// <reference path="../../node_modules/@types/node/events.d.ts" />
+
 declare module 'microgear' {
-  export interface Microgear {
+  import { EventEmitter } from 'events';
+
+  export interface Microgear extends Omit<EventEmitter, 'on'> {
     microgearcache: string;
     /**
      *
