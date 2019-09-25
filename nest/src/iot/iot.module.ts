@@ -12,7 +12,6 @@ import { IotSchema, IOT_MODEL } from './iot.model';
     MongooseModule.forFeature([
       { name: IOT_MODEL, schema: IotSchema, collection: 'sensors' },
     ]),
-    ScheduleModule.register(),
     MicroGearModule,
   ],
   controllers: [IotController],
