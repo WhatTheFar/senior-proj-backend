@@ -13,16 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MicroGearModule,
     ConfigModule,
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
-        const host = configService.databaseHostName;
-        const user = configService.databaseUser;
-        const password = configService.databasePassword;
-        return {
-          uri: `mongodb://${user}:${password}@${host}:27017`,
-        };
-      },
-      inject: [ConfigService],
+      useClass: ConfigService,
     }),
   ],
   controllers: [AppController],

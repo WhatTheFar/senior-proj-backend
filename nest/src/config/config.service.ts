@@ -1,16 +1,30 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import {
+  MongooseOptionsFactory,
+  MongooseModuleOptions,
+} from '@nestjs/mongoose';
 
 function getEnv(key: string) {
   return process.env[key];
 }
 
-export class ConfigService {
+export class ConfigService implements MongooseOptionsFactory {
   private readonly envConfig: { [key: string]: string } = {};
   constructor(filePath?: string) {
     if (fs.existsSync(filePath)) {
       this.envConfig = dotenv.parse(fs.readFileSync(filePath), { debug: true });
     }
+  }
+
+  createMongooseOptions(): MongooseModuleOptions {
+    const host = this.databaseHostName;
+    const user = this.databaseUser;
+    const password = this.databasePassword;
+    return {
+      uri: `mongodb://${user}:${password}@${host}:27017`,
+      dbName: 'seniorproj',
+    };
   }
 
   get(key: string): string | undefined {
