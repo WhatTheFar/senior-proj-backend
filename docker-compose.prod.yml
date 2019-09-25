@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  db:
+    volumes:
+      - ./volumes/db:/data/db
+    command: '--smallfiles'
+
+  backend:
+    image: node:8
+    container_name: senior-proj-backend-prod
+    build: nest

@@ -17,3 +17,6 @@ services:
       DB_HOST: db
       DB_USER: user
       DB_PASSWORD: password
+      NETPIE_APPID:
+      NETPIE_KEY:
+      NETPIE_SECRET:
