@@ -24,6 +24,8 @@ export class ConfigService implements MongooseOptionsFactory {
     return {
       uri: `mongodb://${user}:${password}@${host}:27017`,
       dbName: 'seniorproj',
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     };
   }
 
