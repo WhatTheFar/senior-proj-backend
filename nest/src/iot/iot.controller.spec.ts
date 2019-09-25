@@ -3,6 +3,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IotController } from './iot.controller';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { IotService } from './iot.service';
 
 describe('Iot Controller', () => {
   let app: INestApplication;
@@ -11,7 +12,18 @@ describe('Iot Controller', () => {
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [IotController],
-    }).compile();
+      providers: [IotService],
+    })
+      .overrideProvider(IotService)
+      .useValue({
+        saveCO2: () => {
+          return;
+        },
+        saveMultiSensors: () => {
+          return;
+        },
+      })
+      .compile();
 
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
