@@ -34,6 +34,19 @@ describe('IotService', () => {
     expect(service).toBeDefined();
   });
 
+  const date = new Date();
+  const actualDate = new Date();
+  const device = 1;
+
+  const co2 = 123.456;
+
+  const temp = 42.5;
+  const hum = 42.5;
+  const light = 100.2;
+
+  const co2Payload = { actualDate, device, co2 };
+  const multiPayload = { actualDate, device, temp, hum, light };
+
   describe('saveCO2', () => {
     describe('Given an empty DB', () => {
       beforeEach(async () => {
@@ -41,10 +54,8 @@ describe('IotService', () => {
       });
 
       describe('saveCO2 called', () => {
-        const date = new Date();
-        const co2 = 123.456;
         beforeEach(async () => {
-          await service.saveCO2(date, co2);
+          await service.saveCO2(date, co2Payload);
         });
 
         it('document should be created in DB', async () => {
@@ -55,7 +66,14 @@ describe('IotService', () => {
             __v: expect.any(Number),
             _id: expect.any(ObjectID),
             date,
-            co2,
+            co2: [
+              {
+                _id: expect.any(ObjectID),
+                actualDate,
+                device,
+                co2,
+              },
+            ],
             multi: [],
           });
           expect(docs[0].multi.length).toEqual(0);
@@ -64,21 +82,14 @@ describe('IotService', () => {
     });
 
     describe('Given multi sensors has been saved', () => {
-      const date = new Date();
-      const co2 = 123.456;
-
-      const device = 1;
-      const temp = 42.5;
-      const hum = 42.5;
-      const light = 100.2;
       beforeEach(async () => {
         await iotModel.deleteMany({});
-        await service.saveMultiSensors(date, { device, temp, hum, light });
+        await service.saveMultiSensors(date, multiPayload);
       });
 
       describe('saveCO2 called on the same date', () => {
         beforeEach(async () => {
-          await service.saveCO2(date, co2);
+          await service.saveCO2(date, co2Payload);
         });
 
         it('document should be modified', async () => {
@@ -89,10 +100,18 @@ describe('IotService', () => {
             __v: expect.any(Number),
             _id: expect.any(ObjectID),
             date,
-            co2,
+            co2: [
+              {
+                _id: expect.any(ObjectID),
+                actualDate,
+                device,
+                co2,
+              },
+            ],
             multi: [
               {
                 _id: expect.any(ObjectID),
+                actualDate,
                 device,
                 temp,
                 hum,
@@ -112,13 +131,8 @@ describe('IotService', () => {
       });
 
       describe('saveMultiSensors called', () => {
-        const date = new Date();
-        const device = 1;
-        const temp = 42.5;
-        const hum = 42.5;
-        const light = 100.2;
         beforeEach(async () => {
-          await service.saveMultiSensors(date, { device, temp, hum, light });
+          await service.saveMultiSensors(date, multiPayload);
         });
 
         it('document should be created in DB', async () => {
@@ -129,9 +143,11 @@ describe('IotService', () => {
             __v: expect.any(Number),
             _id: expect.any(ObjectID),
             date,
+            co2: [],
             multi: [
               {
                 _id: expect.any(ObjectID),
+                actualDate,
                 device,
                 temp,
                 hum,
@@ -145,21 +161,14 @@ describe('IotService', () => {
     });
 
     describe('Given co2 sensors has been saved', () => {
-      const date = new Date();
-      const co2 = 123.456;
-
-      const device = 1;
-      const temp = 42.5;
-      const hum = 42.5;
-      const light = 100.2;
       beforeEach(async () => {
         await iotModel.deleteMany({});
-        await service.saveCO2(date, co2);
+        await service.saveCO2(date, co2Payload);
       });
 
       describe('saveCO2 called on the same date', () => {
         beforeEach(async () => {
-          await service.saveMultiSensors(date, { device, temp, hum, light });
+          await service.saveMultiSensors(date, multiPayload);
         });
 
         it('document should be modified', async () => {
@@ -170,10 +179,18 @@ describe('IotService', () => {
             __v: expect.any(Number),
             _id: expect.any(ObjectID),
             date,
-            co2,
+            co2: [
+              {
+                _id: expect.any(ObjectID),
+                actualDate,
+                device,
+                co2,
+              },
+            ],
             multi: [
               {
                 _id: expect.any(ObjectID),
+                actualDate,
                 device,
                 temp,
                 hum,

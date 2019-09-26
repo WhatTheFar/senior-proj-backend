@@ -20,28 +20,31 @@ export class IotService {
     this.microgearService.publish(NETPIE_IOT_SYNC_TOPIC, time.toISOString());
   }
 
-  async saveCO2(date: Date, co2: number) {
+  async saveCO2(
+    date: Date,
+    payload: { actualDate: Date; device: number; co2: number },
+  ) {
     const doc = await this.iotModel.findOne({
       date,
     });
     if (doc) {
-      doc.co2 = co2;
+      doc.co2.push(payload);
       await doc.save();
     } else {
-      const newDoc = new this.iotModel({ date, co2 });
+      const newDoc = new this.iotModel({ date, co2: [payload] });
       await newDoc.save();
     }
   }
 
-  async saveMultiSensors(date: Date, multi: MultiSensor) {
+  async saveMultiSensors(date: Date, payload: MultiSensor) {
     const doc = await this.iotModel.findOne({
       date,
     });
     if (doc) {
-      doc.multi.push(multi);
+      doc.multi.push(payload);
       await doc.save();
     } else {
-      const newDoc = new this.iotModel({ date, multi: [multi] });
+      const newDoc = new this.iotModel({ date, multi: [payload] });
       await newDoc.save();
     }
   }

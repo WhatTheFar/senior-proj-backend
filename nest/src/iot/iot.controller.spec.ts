@@ -40,11 +40,23 @@ describe('Iot Controller', () => {
     expect(controller).toBeDefined();
   });
 
+  const date = new Date().toISOString();
+  const actualDate = new Date().toISOString();
+  const device = 1;
+
+  const co2 = 123.456;
+
+  const temp = 42.5;
+  const hum = 42.5;
+  const light = 100.2;
+
   describe('POST /sensor/co2', () => {
     const endpoint = '/iot/sensor/co2';
     const validBody: CO2SensorDto = {
-      date: new Date().toISOString(),
-      co2: 100,
+      date,
+      actualDate,
+      device,
+      co2,
     };
 
     it('valid args, should OK', () => {
@@ -55,9 +67,10 @@ describe('Iot Controller', () => {
     });
 
     it('invalid body, should Error', () => {
-      const body = {
-        ...validBody,
-        date: 'string',
+      const body: Record<keyof CO2SensorDto, any> = {
+        date: 1,
+        actualDate: 'string',
+        device: 'string',
         co2: 'string',
       };
       return (
@@ -69,10 +82,13 @@ describe('Iot Controller', () => {
           // })
           .expect(400)
           .expect(res => {
+            expect(res.body.message.length).toEqual(4);
             expect(res.body.message).toEqual(
               expect.arrayContaining([
-                expect.objectContaining({ property: 'co2' }),
                 expect.objectContaining({ property: 'date' }),
+                expect.objectContaining({ property: 'actualDate' }),
+                expect.objectContaining({ property: 'device' }),
+                expect.objectContaining({ property: 'co2' }),
               ]),
             );
           })
@@ -84,11 +100,12 @@ describe('Iot Controller', () => {
     const endpoint = '/iot/sensor/multi';
 
     const validBody: MultiSensorsDto = {
-      device: 1,
-      date: new Date().toISOString(),
-      temp: 40.2,
-      hum: 35.2,
-      light: 1000,
+      date,
+      actualDate,
+      device,
+      temp,
+      hum,
+      light,
     };
 
     it('valid args, should OK', () => {
@@ -104,10 +121,10 @@ describe('Iot Controller', () => {
     });
 
     it('invalid body, should Error', () => {
-      const body = {
-        ...validBody,
+      const body: Record<keyof MultiSensorsDto, any> = {
+        date: 1,
+        actualDate: 'string',
         device: 'string',
-        date: 'string',
         temp: 'string',
         hum: 'string',
         light: 'string',
@@ -121,10 +138,12 @@ describe('Iot Controller', () => {
           // })
           .expect(400)
           .expect(res => {
+            expect(res.body.message.length).toEqual(6);
             expect(res.body.message).toEqual(
               expect.arrayContaining([
-                expect.objectContaining({ property: 'device' }),
                 expect.objectContaining({ property: 'date' }),
+                expect.objectContaining({ property: 'actualDate' }),
+                expect.objectContaining({ property: 'device' }),
                 expect.objectContaining({ property: 'temp' }),
                 expect.objectContaining({ property: 'hum' }),
                 expect.objectContaining({ property: 'light' }),

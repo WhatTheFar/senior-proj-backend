@@ -14,14 +14,16 @@ import {
     - CO2 : 1 node
 */
 
-export class DateParams {
-  @IsDateString()
-  date: string;
-}
-
 export class CO2SensorDto {
   @IsDateString()
   date: string;
+
+  @IsDateString()
+  actualDate: string;
+
+  @IsNumber()
+  @IsPositive()
+  device: number;
 
   @IsNumber()
   co2: number;
@@ -33,6 +35,9 @@ export class MultiSensorsDto {
   @IsNumber()
   @IsPositive()
   device: number;
+
+  @IsDateString()
+  actualDate: string;
 
   @IsDateString()
   date: string;
