@@ -4,6 +4,9 @@ services:
   traefik:
     image: 'traefik:v2.0.0'
     container_name: 'traefik'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
     command:
       # - '--log.level=DEBUG'
       - '--api.insecure=true'
@@ -23,6 +26,18 @@ services:
     volumes:
       - './letsencrypt:/letsencrypt'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
+
+  # whoami:
+  #   image: 'containous/whoami'
+  #   container_name: 'simple-service'
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.whoami_insecure.rule=host(`whoami.mydomain.com`)'
+  #     - 'traefik.http.routers.whoami_insecure.entrypoints=web'
+  #     - 'traefik.http.routers.whoami_insecure.middlewares=redirect-to-https@docker'
+  #     - 'traefik.http.routers.whoami.rule=host(`whoami.mydomain.com`)'
+  #     - 'traefik.http.routers.whoami.entrypoints=websecure'
+  #     - 'traefik.http.routers.whoami.tls.certresolver=myhttpchallenge'
 
   db:
     volumes:
