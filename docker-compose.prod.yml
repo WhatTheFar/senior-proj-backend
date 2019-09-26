@@ -27,7 +27,6 @@ services:
   db:
     volumes:
       - ./volumes/db:/data/db
-    command: '--smallfiles'
 
   backend:
     image: node:8
