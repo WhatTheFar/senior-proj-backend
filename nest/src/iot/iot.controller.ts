@@ -1,7 +1,9 @@
 import { IotService } from './iot.service';
 import { MultiSensorsDto, CO2SensorDto } from './iot.dto';
 import { Controller, Post, Body, Param, HttpCode } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
 
+@ApiUseTags('iot')
 @Controller('iot')
 export class IotController {
   constructor(private readonly iotService: IotService) {}
