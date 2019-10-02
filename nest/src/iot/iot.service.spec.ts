@@ -8,6 +8,30 @@ import { IotService } from './iot.service';
 import { Model } from 'mongoose';
 import { ObjectID } from 'bson';
 
+const baseIotDoc = {
+  __v: expect.any(Number),
+  _id: expect.any(ObjectID),
+  date: expect.any(Date),
+  co2: [],
+  multi: [],
+};
+
+const baseMulti = {
+  _id: expect.any(ObjectID),
+  actualDate: expect.any(Date),
+  device: expect.any(Number),
+  temp: expect.any(Number),
+  hum: expect.any(Number),
+  light: expect.any(Number),
+};
+
+const baseCo2 = {
+  _id: expect.any(ObjectID),
+  actualDate: expect.any(Date),
+  device: expect.any(Number),
+  co2: expect.any(Number),
+};
+
 describe('IotService', () => {
   let service: IotService;
   let iotModel: Model<IIot>;
@@ -47,141 +71,50 @@ describe('IotService', () => {
   const co2Payload = { actualDate, device, co2 };
   const multiPayload = { actualDate, device, temp, hum, light };
 
-  describe('saveCO2', () => {
-    describe('Given an empty DB', () => {
-      beforeEach(async () => {
-        await iotModel.deleteMany({});
-      });
-
-      describe('saveCO2 called', () => {
-        beforeEach(async () => {
-          await service.saveCO2(date, co2Payload);
-        });
-
-        it('document should be created in DB', async () => {
-          const docs = await iotModel.find({ date });
-
-          expect(docs.length).toEqual(1);
-          expect(docs[0].toObject()).toEqual({
-            __v: expect.any(Number),
-            _id: expect.any(ObjectID),
-            date,
-            co2: [
-              {
-                _id: expect.any(ObjectID),
-                actualDate,
-                device,
-                co2,
-              },
-            ],
-            multi: [],
-          });
-          expect(docs[0].multi.length).toEqual(0);
-        });
-      });
+  describe('Given an empty DB', () => {
+    beforeEach(async () => {
+      await iotModel.deleteMany({});
     });
 
-    describe('Given multi sensors has been saved', () => {
+    describe('saveCO2 called', () => {
       beforeEach(async () => {
-        await iotModel.deleteMany({});
-        await service.saveMultiSensors(date, multiPayload);
-      });
-
-      describe('saveCO2 called on the same date', () => {
-        beforeEach(async () => {
-          await service.saveCO2(date, co2Payload);
-        });
-
-        it('document should be modified', async () => {
-          const docs = await iotModel.find({ date });
-
-          expect(docs.length).toEqual(1);
-          expect(docs[0].toObject()).toEqual({
-            __v: expect.any(Number),
-            _id: expect.any(ObjectID),
-            date,
-            co2: [
-              {
-                _id: expect.any(ObjectID),
-                actualDate,
-                device,
-                co2,
-              },
-            ],
-            multi: [
-              {
-                _id: expect.any(ObjectID),
-                actualDate,
-                device,
-                temp,
-                hum,
-                light,
-              },
-            ],
-          });
-        });
-      });
-    });
-  });
-
-  describe('saveMultiSensors', () => {
-    describe('Given an empty DB', () => {
-      beforeEach(async () => {
-        await iotModel.deleteMany({});
-      });
-
-      describe('saveMultiSensors called', () => {
-        beforeEach(async () => {
-          await service.saveMultiSensors(date, multiPayload);
-        });
-
-        it('document should be created in DB', async () => {
-          const docs = await iotModel.find({ date });
-
-          expect(docs.length).toEqual(1);
-          expect(docs[0].toObject()).toEqual({
-            __v: expect.any(Number),
-            _id: expect.any(ObjectID),
-            date,
-            co2: [],
-            multi: [
-              {
-                _id: expect.any(ObjectID),
-                actualDate,
-                device,
-                temp,
-                hum,
-                light,
-              },
-            ],
-          });
-          expect(docs[0].multi.length).toEqual(1);
-        });
-      });
-    });
-
-    describe('Given co2 sensors has been saved', () => {
-      beforeEach(async () => {
-        await iotModel.deleteMany({});
         await service.saveCO2(date, co2Payload);
       });
 
-      describe('saveCO2 called on the same date', () => {
+      it('document should be created in DB', async () => {
+        const docs = await iotModel.find({ date });
+
+        expect(docs.length).toEqual(1);
+        expect(docs[0].toObject()).toEqual({
+          ...baseIotDoc,
+          date,
+          co2: [
+            {
+              _id: expect.any(ObjectID),
+              actualDate,
+              device,
+              co2,
+            },
+          ],
+        });
+        expect(docs[0].multi.length).toEqual(0);
+      });
+
+      describe('saveMultiSensors called on the same date', () => {
         beforeEach(async () => {
           await service.saveMultiSensors(date, multiPayload);
         });
 
-        it('document should be modified', async () => {
+        it('document should be modified with addtional MultiSensors', async () => {
           const docs = await iotModel.find({ date });
 
           expect(docs.length).toEqual(1);
           expect(docs[0].toObject()).toEqual({
-            __v: expect.any(Number),
-            _id: expect.any(ObjectID),
+            ...baseIotDoc,
             date,
             co2: [
               {
-                _id: expect.any(ObjectID),
+                ...baseCo2,
                 actualDate,
                 device,
                 co2,
@@ -189,7 +122,68 @@ describe('IotService', () => {
             ],
             multi: [
               {
-                _id: expect.any(ObjectID),
+                ...baseMulti,
+                actualDate,
+                device,
+                temp,
+                hum,
+                light,
+              },
+            ],
+          });
+        });
+      });
+    });
+
+    describe('saveMultiSensors called', () => {
+      beforeEach(async () => {
+        await service.saveMultiSensors(date, multiPayload);
+      });
+
+      it('document should be created in DB', async () => {
+        const docs = await iotModel.find({ date });
+
+        expect(docs.length).toEqual(1);
+        expect(docs[0].toObject()).toEqual({
+          ...baseIotDoc,
+          date,
+          multi: [
+            {
+              ...baseMulti,
+              actualDate,
+              device,
+              temp,
+              hum,
+              light,
+            },
+          ],
+        });
+        expect(docs[0].multi.length).toEqual(1);
+      });
+
+      describe('saveCO2 called on the same date', () => {
+        beforeEach(async () => {
+          await service.saveCO2(date, co2Payload);
+        });
+
+        it('document should be modified, with addtional CO2', async () => {
+          const docs = await iotModel.find({ date });
+
+          expect(docs.length).toEqual(1);
+          expect(docs[0].toObject()).toEqual({
+            ...baseIotDoc,
+            date,
+            co2: [
+              {
+                ...baseCo2,
+                actualDate,
+                device,
+                co2,
+              },
+            ],
+            multi: [
+              {
+                ...baseMulti,
                 actualDate,
                 device,
                 temp,
