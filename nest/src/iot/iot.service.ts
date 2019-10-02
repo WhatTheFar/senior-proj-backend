@@ -20,6 +20,19 @@ export class IotService {
     this.microgearService.publish(NETPIE_IOT_SYNC_TOPIC, time.toISOString());
   }
 
+  async savePeopleNumber(date: Date, people: number) {
+    const doc = await this.iotModel.findOne({
+      date,
+    });
+    if (doc) {
+      doc.people = people;
+      await doc.save();
+    } else {
+      const newDoc = new this.iotModel({ date, people });
+      await newDoc.save();
+    }
+  }
+
   async saveCO2(
     date: Date,
     payload: { actualDate: Date; device: number; co2: number },
