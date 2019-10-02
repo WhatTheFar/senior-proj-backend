@@ -1,9 +1,10 @@
 import { ConfigService } from '../config/config.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as MicroGear from 'microgear';
+import * as fs from 'fs';
 
-// const NETPIE_CACHE_PATH = '/tmp/microgear-g1.cache';
-// const NETPIE_CACHE_PATH = `${process.cwd()}/microgear-g1.cache`;
+const NETPIE_CACHE_DIR = `${process.cwd()}/microgear`;
+const NETPIE_CACHE_PATH = `${NETPIE_CACHE_DIR}/microgear-g1.cache`;
 
 @Injectable()
 export class MicroGearService implements OnModuleInit {
@@ -12,6 +13,9 @@ export class MicroGearService implements OnModuleInit {
   constructor(private readonly configService: ConfigService) {}
 
   async onModuleInit(): Promise<void> {
+    if (!fs.existsSync(NETPIE_CACHE_DIR)) {
+      fs.mkdirSync(NETPIE_CACHE_DIR);
+    }
     await this.init();
   }
   private init(): Promise<MicroGear.Microgear> {
@@ -20,7 +24,7 @@ export class MicroGearService implements OnModuleInit {
       secret: this.configService.netpieSecret,
       alias: 'nest',
     });
-    // microgear.setCachePath(NETPIE_CACHE_PATH);
+    microgear.setCachePath(NETPIE_CACHE_PATH);
 
     this.microgear = microgear;
 
