@@ -14,8 +14,10 @@ FROM node:10-alpine
 WORKDIR /app
 
 COPY --from=builder /app/package.json /app/yarn.lock ./
-COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 
-RUN yarn install --production
+RUN yarn install --production --ignore-scripts --prefer-offline
+
+COPY --from=builder /app/dist ./dist
+
 CMD yarn run start:prod
