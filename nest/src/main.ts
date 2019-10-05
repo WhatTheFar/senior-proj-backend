@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('Senior Project')
     .setDescription('The seniorproj API description')
     .setVersion('1.0')
+    .setSchemes('https', 'http')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
