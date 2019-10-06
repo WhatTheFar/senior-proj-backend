@@ -51,7 +51,6 @@ services:
       - ./volumes/db:/data/db
 
   backend:
-    image: node:8
     container_name: senior-proj-backend-prod
     build: nest
     labels:
