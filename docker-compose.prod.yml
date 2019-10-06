@@ -61,5 +61,5 @@ services:
       - 'traefik.http.routers.backend.entrypoints=websecure'
       - 'traefik.http.routers.backend.tls.certresolver=myhttpchallenge'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
-    volumes: 
+    volumes:
       - ./nest/microgear:/app/microgear
