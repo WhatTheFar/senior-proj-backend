@@ -4,7 +4,13 @@ export const IOT_MODEL = 'iot';
 
 export const IotSchema = new mongoose.Schema({
   date: { type: Date, required: true },
-  people: { type: Number, required: false },
+  people: {
+    type: {
+      actualDate: { type: Date, required: true },
+      people: { type: Number, required: true },
+    },
+    required: false,
+  },
   co2: [
     {
       actualDate: { type: Date, required: true },
@@ -37,9 +43,14 @@ export interface MultiSensor {
   light: number;
 }
 
+export interface PeopleData {
+  actualDate: Date;
+  people: number;
+}
+
 export interface IIot extends mongoose.Document {
   date: Date;
-  people?: number;
+  people?: PeopleData;
   co2: CO2Sensor[];
   multi: MultiSensor[];
 }

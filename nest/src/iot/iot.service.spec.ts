@@ -16,6 +16,11 @@ const baseIotDoc = {
   multi: [],
 };
 
+const basePeople = {
+  actualDate: expect.any(Date),
+  people: expect.any(Number),
+};
+
 const baseMulti = {
   _id: expect.any(ObjectID),
   actualDate: expect.any(Date),
@@ -70,6 +75,7 @@ describe('IotService', () => {
   const hum = 42.5;
   const light = 100.2;
 
+  const peoplePayload = { actualDate, people };
   const co2Payload = { actualDate, device, co2 };
   const multiPayload = { actualDate, device, temp, hum, light };
 
@@ -80,7 +86,7 @@ describe('IotService', () => {
 
     describe('savePeopleNumber called', () => {
       beforeEach(async () => {
-        await service.savePeopleNumber(date, people);
+        await service.savePeopleNumber(date, peoplePayload);
       });
 
       it('document should be created in DB', async () => {
@@ -90,7 +96,7 @@ describe('IotService', () => {
         expect(docs[0].toObject()).toEqual({
           ...baseIotDoc,
           date,
-          people,
+          people: basePeople,
         });
       });
     });
@@ -123,7 +129,7 @@ describe('IotService', () => {
 
       describe('savePeopleNumber called on the same date', () => {
         beforeEach(async () => {
-          await service.savePeopleNumber(date, people);
+          await service.savePeopleNumber(date, peoplePayload);
         });
 
         it('document should be created in DB', async () => {
@@ -133,7 +139,7 @@ describe('IotService', () => {
           expect(docs[0].toObject()).toEqual({
             ...baseIotDoc,
             date,
-            people,
+            people: basePeople,
             co2: expectedCo2,
           });
         });
