@@ -1,5 +1,5 @@
 import { IotService } from './iot.service';
-import { MultiSensorsDto, CO2SensorDto } from './iot.dto';
+import { MultiSensorsDto, CO2SensorDto, PeopleDto } from './iot.dto';
 import { Controller, Post, Body, Param, HttpCode } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
@@ -7,6 +7,19 @@ import { ApiUseTags } from '@nestjs/swagger';
 @Controller('iot')
 export class IotController {
   constructor(private readonly iotService: IotService) {}
+
+  @Post('sensor/people')
+  async post(@Body() body: PeopleDto): Promise<string> {
+    const { date: dateString, actualDate: actualDateStirng, people } = body;
+    const date = new Date(dateString);
+    const actualDate = new Date(actualDateStirng);
+    const payload = {
+      actualDate,
+      people,
+    };
+    await this.iotService.savePeopleNumber(date, payload);
+    return 'OK';
+  }
 
   @Post('sensor/co2')
   @HttpCode(200)

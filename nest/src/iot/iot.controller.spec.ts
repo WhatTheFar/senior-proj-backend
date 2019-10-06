@@ -1,4 +1,4 @@
-import { CO2SensorDto, MultiSensorsDto } from './iot.dto';
+import { CO2SensorDto, MultiSensorsDto, PeopleDto } from './iot.dto';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IotController } from './iot.controller';
@@ -16,6 +16,9 @@ describe('Iot Controller', () => {
     })
       .overrideProvider(IotService)
       .useValue({
+        savePeopleNumber: () => {
+          return;
+        },
         saveCO2: () => {
           return;
         },
@@ -44,11 +47,56 @@ describe('Iot Controller', () => {
   const actualDate = new Date().toISOString();
   const device = 1;
 
+  const people = 4;
+
   const co2 = 123.456;
 
   const temp = 42.5;
   const hum = 42.5;
   const light = 100.2;
+
+  describe('POST /sensor/people', () => {
+    const endpoint = '/iot/sensor/people';
+    const validBody: PeopleDto = {
+      date,
+      actualDate,
+      people,
+    };
+
+    it('valid args, should OK', () => {
+      return request(app.getHttpServer())
+        .post(endpoint)
+        .send(validBody)
+        .expect(201);
+    });
+
+    it('invalid body, should Error', () => {
+      const body: Record<keyof PeopleDto, any> = {
+        date: 1,
+        actualDate: 'string',
+        people: 1.1,
+      };
+      return (
+        request(app.getHttpServer())
+          .post(endpoint)
+          .send(body)
+          // .expect(res => {
+          //   console.log(JSON.stringify(res.body, null, 4));
+          // })
+          .expect(400)
+          .expect(res => {
+            expect(res.body.message.length).toEqual(3);
+            expect(res.body.message).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ property: 'date' }),
+                expect.objectContaining({ property: 'actualDate' }),
+                expect.objectContaining({ property: 'people' }),
+              ]),
+            );
+          })
+      );
+    });
+  });
 
   describe('POST /sensor/co2', () => {
     const endpoint = '/iot/sensor/co2';

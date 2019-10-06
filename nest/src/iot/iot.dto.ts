@@ -1,4 +1,4 @@
-import { IsNumber, IsDateString, IsPositive } from 'class-validator';
+import { IsNumber, IsDateString, IsPositive, IsInt } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 // tslint:disable: max-classes-per-file
@@ -8,6 +8,20 @@ import { ApiModelProperty } from '@nestjs/swagger';
     - Temperature,Humidity,Light : 4 nodes
     - CO2 : 1 node
 */
+
+export class PeopleDto {
+  @IsDateString()
+  @ApiModelProperty({ example: '2019-10-01T00:00:00.000Z' })
+  date: string;
+
+  @IsDateString()
+  @ApiModelProperty({ example: '2019-10-01T00:00:00.000Z' })
+  actualDate: string;
+
+  @IsInt()
+  @ApiModelProperty()
+  people: number;
+}
 
 export class CO2SensorDto {
   @IsDateString()
