@@ -20,6 +20,12 @@ export class IotController {
     return 'OK';
   }
 
+  @Put('sensor/people/bg')
+  async resetCoutnerBackground(): Promise<string> {
+    await this.iotService.resetCounterBackground();
+    return 'OK';
+  }
+
   @Post('sensor/people')
   async post(@Body() body: PeopleDto): Promise<string> {
     const { date: dateString, actualDate: actualDateStirng, people } = body;
