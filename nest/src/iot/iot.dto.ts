@@ -9,6 +9,12 @@ import { ApiModelProperty } from '@nestjs/swagger';
     - CO2 : 1 node
 */
 
+export class PutCountDto {
+  @IsInt()
+  @ApiModelProperty()
+  people: number;
+}
+
 export class PeopleDto {
   @IsDateString()
   @ApiModelProperty({ example: '2019-10-01T00:00:00.000Z' })

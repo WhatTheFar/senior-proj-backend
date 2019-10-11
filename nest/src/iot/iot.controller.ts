@@ -1,12 +1,24 @@
 import { IotService } from './iot.service';
-import { MultiSensorsDto, CO2SensorDto, PeopleDto } from './iot.dto';
-import { Controller, Post, Body, Param, HttpCode } from '@nestjs/common';
+import {
+  MultiSensorsDto,
+  CO2SensorDto,
+  PeopleDto,
+  PutCountDto,
+} from './iot.dto';
+import { Controller, Post, Body, Param, HttpCode, Put } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 @ApiUseTags('iot')
 @Controller('iot')
 export class IotController {
   constructor(private readonly iotService: IotService) {}
+
+  @Put('sensor/people/count')
+  async putPeopleCount(@Body() body: PutCountDto): Promise<string> {
+    const { people } = body;
+    await this.iotService.setPeopleCount(people);
+    return 'OK';
+  }
 
   @Post('sensor/people')
   async post(@Body() body: PeopleDto): Promise<string> {
