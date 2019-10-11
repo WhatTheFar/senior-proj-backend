@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
  * Constants for NETPIE
  */
 const NETPIE_IOT_SYNC_TOPIC = '/iot';
+const NETPIE_COUNTER_BG_RESET_TOPIC = '/people/bg';
 const NETPIE_PEOPLE_COUNT_SET_TOPIC = '/people/set';
 
 @Injectable()
@@ -19,6 +20,13 @@ export class IotService {
 
   publishTimeSyncronization(time: Date) {
     this.microgearService.publish(NETPIE_IOT_SYNC_TOPIC, time.toISOString());
+  }
+
+  resetCounterBackground() {
+    this.microgearService.publish(
+      NETPIE_COUNTER_BG_RESET_TOPIC,
+      new Date().toISOString(),
+    );
   }
 
   setPeopleCount(count: number) {
