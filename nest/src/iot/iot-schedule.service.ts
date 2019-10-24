@@ -1,3 +1,4 @@
+import { ConfigService } from './../config/config.service';
 import { IotService } from './iot.service';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { Cron, NestSchedule, Schedule, InjectSchedule } from 'nest-schedule';
@@ -23,13 +24,13 @@ export class IotScheduleService implements OnApplicationBootstrap {
   constructor(
     @InjectSchedule() private readonly schedule: Schedule,
     private readonly iotService: IotService,
+    private readonly configService: ConfigService,
   ) {}
 
   onApplicationBootstrap() {
     this.schedule.scheduleCronJob(
       'iot',
-      // '*/10 * * * * *',
-      '*/1 * * * *',
+      this.configService.iotCron,
       this.iotSensorSyncronizationCronJob.bind(this),
     );
   }

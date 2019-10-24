@@ -1,3 +1,4 @@
+import { ConfigModule } from './../config/config.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MicroGearModule } from './../microgear/microgear.module';
 import { Module } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { IotSchema, IOT_MODEL } from './iot.model';
       { name: IOT_MODEL, schema: IotSchema, collection: 'sensors' },
     ]),
     MicroGearModule,
+    ConfigModule,
   ],
   controllers: [IotController],
   providers: [IotService, IotScheduleService],

@@ -60,4 +60,7 @@ export class ConfigService implements MongooseOptionsFactory {
   get netpieSecret(): string {
     return this.getOrThrows('NETPIE_SECRET');
   }
+  get iotCron(): string {
+    return this.getOrThrows('IOT_CRON');
+  }
 }

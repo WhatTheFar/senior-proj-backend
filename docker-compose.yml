@@ -20,3 +20,4 @@ services:
       NETPIE_APPID:
       NETPIE_KEY:
       NETPIE_SECRET:
+      IOT_CRON:
