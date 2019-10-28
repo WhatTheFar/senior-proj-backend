@@ -1,0 +1,165 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.0
+jobs:
+  test:
+    docker:
+      - image: circleci/node:10
+        environment:
+          DB_HOST: localhost
+          DB_USER: user
+          DB_PASSWORD: password
+          NETPIE_APPID: test
+          NETPIE_KEY: test
+          NETPIE_SECRET: test
+          IOT_CRON: 0 5 31 2 *
+      - image: mongo:4.2
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: user
+          MONGO_INITDB_ROOT_PASSWORD: password
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - dependencies-v1.0-{{ .Branch }}
+
+      - run:
+          name: Install Dependencies
+          command: cd nest && yarn install
+
+      - run:
+          name: Running Test
+          command: cd nest && yarn test
+
+      - save_cache:
+          paths:
+            - nest/node_modules
+          key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+
+build:
+  docker:
+    - image: circleci/node:10
+      environment:
+        DB_HOST: localhost
+        DB_USER: user
+        DB_PASSWORD: password
+        NETPIE_APPID: test
+        NETPIE_KEY: test
+        NETPIE_SECRET: test
+        IOT_CRON: 0 5 31 2 *
+    - image: mongo:4.2
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: user
+        MONGO_INITDB_ROOT_PASSWORD: password
+
+  working_directory: ~/repo
+  steps:
+    - checkout
+
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+          - dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - dependencies-v1.0-{{ .Branch }}
+
+    - run:
+        name: Install Dependencies
+        command: cd nest && yarn install
+
+    - run:
+        name: Running Test
+        command: cd nest && yarn test
+
+    - run:
+        name: Build
+        command: cd backend && yarn build
+
+    - save_cache:
+        paths:
+          - nest/node_modules
+        key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+
+  deploy:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - '6a:85:c7:59:b3:d2:7e:57:a1:46:6d:dd:4e:84:57:77'
+
+      - attach_workspace:
+          at: ~/repo
+
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo 'export SSH_USER="$SSH_USER"' >> $BASH_ENV
+              echo 'export SSH_HOST="$SSH_HOST"' >> $BASH_ENV
+            fi
+            if [ "${CIRCLE_BRANCH}" == "stage" ]; then
+              echo 'export SSH_USER="$STAGE_SSH_USER"' >> $BASH_ENV
+              echo 'export SSH_HOST="$STAGE_SSH_HOST"' >> $BASH_ENV
+            fi
+
+      - run:
+          name: Checkout Code for Deployment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ssh $SSH_USER@$SSH_HOST '\
+              if mkdir senior-proj-backend; \
+              then git clone -b master --single-branch git@github.com:WhatTheFar/senior-proj-backend.git senior-proj-backend; \
+              else cd senior-proj-backend; git fetch --all; git reset --hard origin/master; \
+              fi;'
+            fi
+            if [ "${CIRCLE_BRANCH}" == "stage" ]; then
+              ssh $SSH_USER@$SSH_HOST '\
+              if mkdir senior-proj-backend; \
+              then git clone -b stage --single-branch git@github.com:WhatTheFar/senior-proj-backend.git senior-proj-backend; \
+              else cd senior-proj-backend; git fetch --all; git reset --hard origin/stage; \
+              fi;'
+            fi
+
+      - run:
+          name: Create and Send .env Over SSH
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              scp $SSH_USER@$SSH_HOST:senior-proj-backend/.env.template.prod .env.template
+            fi
+            if [ "${CIRCLE_BRANCH}" == "stage" ]; then
+              scp $SSH_USER@$SSH_HOST:senior-proj-backend/.env.template.stage .env.template
+            fi
+            eval "echo \"$(< .env.template)\"" > .env
+            scp .env $SSH_USER@$SSH_HOST:senior-proj-backend
+
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST "cd senior-proj-backend && \
+            docker image tag senior-proj-backend senior-proj-backend:backup && \
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build backend && \
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate && \
+            docker image prune -f"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - stage
+                - master
