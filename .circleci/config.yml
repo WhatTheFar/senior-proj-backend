@@ -94,7 +94,7 @@ build:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - '6a:85:c7:59:b3:d2:7e:57:a1:46:6d:dd:4e:84:57:77'
+            - 'a8:89:6c:63:2d:eb:24:9e:12:ac:b8:d3:16:da:52:31'
 
       - attach_workspace:
           at: ~/repo
