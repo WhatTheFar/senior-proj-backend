@@ -1,6 +1,5 @@
-import { IIot } from './../../dist/iot/iot.model.d';
 import { ConfigService } from './../config/config.service';
-import { IOT_MODEL, IotSchema } from './iot.model';
+import { IOT_MODEL, IotSchema, IIot } from './iot.model';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { MicroGearModule } from './../microgear/microgear.module';
 import { Test, TestingModule } from '@nestjs/testing';
