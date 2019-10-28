@@ -1,3 +1,4 @@
+import { IotDto } from './iot.dto';
 import { ConfigService } from './../config/config.service';
 import { IOT_MODEL, IotSchema, IIot } from './iot.model';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
@@ -144,7 +145,7 @@ describe('IotService', () => {
         });
 
         describe('getAllSensors called', () => {
-          let allSensors: IIot[];
+          let allSensors: IotDto[];
           beforeEach(async () => {
             allSensors = await service.getAllSensors({ offset: 0, limit: 0 });
           });
