@@ -7,7 +7,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IotService } from './iot.service';
 import { Model } from 'mongoose';
 import { ObjectID } from 'bson';
-import { async } from 'rxjs/internal/scheduler/async';
 
 const baseIotDoc = {
   __v: expect.any(Number),
