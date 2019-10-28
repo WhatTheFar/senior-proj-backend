@@ -44,50 +44,6 @@ jobs:
             - nest/node_modules
           key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
 
-build:
-  docker:
-    - image: circleci/node:10
-      environment:
-        DB_HOST: localhost
-        DB_USER: user
-        DB_PASSWORD: password
-        NETPIE_APPID: test
-        NETPIE_KEY: test
-        NETPIE_SECRET: test
-        IOT_CRON: 0 5 31 2 *
-    - image: mongo:4.2
-      environment:
-        MONGO_INITDB_ROOT_USERNAME: user
-        MONGO_INITDB_ROOT_PASSWORD: password
-
-  working_directory: ~/repo
-  steps:
-    - checkout
-
-    # Download and cache dependencies
-    - restore_cache:
-        keys:
-          - dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - dependencies-v1.0-{{ .Branch }}
-
-    - run:
-        name: Install Dependencies
-        command: cd nest && yarn install
-
-    - run:
-        name: Running Test
-        command: cd nest && yarn test
-
-    - run:
-        name: Build
-        command: cd backend && yarn build
-
-    - save_cache:
-        paths:
-          - nest/node_modules
-        key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
-
   deploy:
     machine: true
     working_directory: ~/repo
