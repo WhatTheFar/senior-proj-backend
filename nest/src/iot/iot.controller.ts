@@ -1,17 +1,39 @@
+import { IIot } from './iot.model';
 import { IotService } from './iot.service';
 import {
   MultiSensorsDto,
   CO2SensorDto,
   PeopleDto,
   PutCountDto,
+  GetAllSensorsQuery,
+  IotDto,
 } from './iot.dto';
-import { Controller, Post, Body, Param, HttpCode, Put } from '@nestjs/common';
-import { ApiUseTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  HttpCode,
+  Put,
+  Get,
+  Query,
+} from '@nestjs/common';
+import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 
 @ApiUseTags('iot')
 @Controller('iot')
 export class IotController {
   constructor(private readonly iotService: IotService) {}
+
+  @Get('sensor')
+  @ApiOkResponse({ type: IotDto, isArray: true })
+  async getAllSensors(@Query() query: GetAllSensorsQuery): Promise<IotDto[]> {
+    const { offset, limit } = query;
+    return await this.iotService.getAllSensors({
+      offset: parseInt(offset, 10),
+      limit: parseInt(limit, 10),
+    });
+  }
 
   @Put('sensor/people/count')
   async putPeopleCount(@Body() body: PutCountDto): Promise<string> {

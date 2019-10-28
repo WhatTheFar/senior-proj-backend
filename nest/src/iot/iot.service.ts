@@ -1,3 +1,4 @@
+import { IotDto } from './iot.dto';
 import { MicroGearService } from './../microgear/microgear.service';
 import { Injectable } from '@nestjs/common';
 import { IOT_MODEL, IIot, MultiSensor } from './iot.model';
@@ -34,6 +35,26 @@ export class IotService {
       NETPIE_PEOPLE_COUNT_SET_TOPIC,
       count.toString(),
     );
+  }
+
+  async getAllSensors(options?: {
+    offset?: number;
+    limit?: number;
+  }): Promise<IotDto[]> {
+    const { offset, limit } = {
+      offset: 0,
+      limit: 0,
+      ...options,
+    };
+
+    const query = await this.iotModel
+      .find()
+      .sort({ date: -1 })
+      .skip(offset)
+      .limit(limit)
+      .exec();
+
+    return query.map(o => o.toObject());
   }
 
   async savePeopleNumber(

@@ -7,6 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IotService } from './iot.service';
 import { Model } from 'mongoose';
 import { ObjectID } from 'bson';
+import { async } from 'rxjs/internal/scheduler/async';
 
 const baseIotDoc = {
   __v: expect.any(Number),
@@ -141,6 +142,23 @@ describe('IotService', () => {
             date,
             people: basePeople,
             co2: expectedCo2,
+          });
+        });
+
+        describe('getAllSensors called', () => {
+          let allSensors: IIot[];
+          beforeEach(async () => {
+            allSensors = await service.getAllSensors({ offset: 0, limit: 0 });
+          });
+
+          it('should return an array w/ 1 elem', () => {
+            expect(allSensors.length).toEqual(1);
+            expect(allSensors[0]).toEqual({
+              ...baseIotDoc,
+              date,
+              people: basePeople,
+              co2: expectedCo2,
+            });
           });
         });
       });

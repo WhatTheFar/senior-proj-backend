@@ -1,4 +1,11 @@
-import { IsNumber, IsDateString, IsPositive, IsInt } from 'class-validator';
+import {
+  IsNumber,
+  IsDateString,
+  IsPositive,
+  IsInt,
+  IsNumberString,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 // tslint:disable: max-classes-per-file
@@ -8,6 +15,16 @@ import { ApiModelProperty } from '@nestjs/swagger';
     - Temperature,Humidity,Light : 4 nodes
     - CO2 : 1 node
 */
+
+export class GetAllSensorsQuery {
+  @IsNumberString()
+  @ApiModelProperty({ example: 0, required: false, default: 0 })
+  offset: string;
+
+  @IsNumberString()
+  @ApiModelProperty({ example: 5, required: false, default: 10 })
+  limit: string;
+}
 
 export class PutCountDto {
   @IsInt()
@@ -75,4 +92,21 @@ export class MultiSensorsDto {
   @IsNumber()
   @ApiModelProperty()
   light: number;
+}
+
+export class IotDto {
+  @ApiModelProperty({ type: String, example: '2019-10-01T00:00:00.000Z' })
+  date: Date;
+
+  @ApiModelProperty({ type: PeopleDto })
+  @Type(() => PeopleDto)
+  people?: PeopleDto;
+
+  @ApiModelProperty({ type: CO2SensorDto, isArray: true })
+  @Type(() => CO2SensorDto)
+  co2: CO2SensorDto[];
+
+  @ApiModelProperty({ type: MultiSensorsDto, isArray: true })
+  @Type(() => MultiSensorsDto)
+  multi: MultiSensorsDto[];
 }
