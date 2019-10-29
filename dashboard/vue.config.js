@@ -1,3 +1,6 @@
 module.exports = {
-  lintOnSave: false
-}
+  lintOnSave: false,
+  devServer: {
+    proxy: "https://seniorproj.thinc.in.th"
+  }
+};
