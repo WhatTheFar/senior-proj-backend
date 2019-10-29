@@ -182,14 +182,17 @@ export default class Home extends Vue {
   private tableData: Array<SensorInfo> = [];
 
   async mounted() {
-    const result = await this.axios.get<SensorInfo[]>(
-      "http://localhost:3000/sensorResult"
-    );
+    const result = await this.axios.get<SensorInfo[]>("iot/sensor", {
+      params: {
+        offset: 0,
+        limit: 10
+      }
+    });
     this.tableData = result.data;
   }
 
   get currentNumberOfPeople(): number {
-    return this.tableData.length > 0 ? this.tableData[0].people : 0;
+    return this.tableData.length > 0 ? this.tableData[0].people.people : 0;
   }
 
   private async setNumberOfPeople() {
@@ -202,9 +205,8 @@ export default class Home extends Vue {
     } else {
       console.log("People: " + this.numberOfPeople);
     }
-
-    const result = await this.axios.post(
-      "http://localhost:3000/test",
+    const result = await this.axios.put(
+      "/iot/sensor/people/count",
       this.numberOfPeople
     );
     console.log(result.data);
@@ -213,6 +215,8 @@ export default class Home extends Vue {
   private async resetBackground() {
     this.resetBtnIsClicked = true;
     this.resetBtnDisable = true;
+    const result = await this.axios.put("/iot/sensor/people/bg");
+    console.log(result.data);
     setTimeout(() => {
       this.resetBtnIsClicked = false;
       this.resetBtnDisable = false;
