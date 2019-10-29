@@ -94,11 +94,20 @@
           <tbody>
             <tr v-for="(value, key) in tableData" :key="key">
               <th scope="row">{{value.date}}</th>
-              <td>{{value.people}}</td>
-              <td>{{value.co2}}</td>
-              <td>{{value.hum}}</td>
-              <td>{{value.temp}}</td>
-              <td>{{value.light}}</td>
+              <td>{{value.people.people}}</td>
+              <td>{{value.co2[0].co2}}</td>
+              <td>{{value.multi[0].hum}}</td>
+              <td>{{value.multi[1].hum}}</td>
+              <td>{{value.multi[2].hum}}</td>
+              <td>{{value.multi[3].hum}}</td>
+              <td>{{value.multi[0].temp}}</td>
+              <td>{{value.multi[1].temp}}</td>
+              <td>{{value.multi[2].temp}}</td>
+              <td>{{value.multi[3].temp}}</td>
+              <td>{{value.multi[0].light}}</td>
+              <td>{{value.multi[1].light}}</td>
+              <td>{{value.multi[2].light}}</td>
+              <td>{{value.multi[3].light}}</td>
             </tr>
           </tbody>
         </table>
