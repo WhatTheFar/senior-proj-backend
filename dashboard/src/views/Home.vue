@@ -221,7 +221,7 @@ export default class Home extends Vue {
       this.resetBtnIsClicked = false;
       this.resetBtnDisable = false;
       alert("Background reset successful!");
-    }, 10000);
+    }, 600000);
   }
 }
 </script>
