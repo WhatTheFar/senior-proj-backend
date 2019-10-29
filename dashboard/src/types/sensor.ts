@@ -1,6 +1,8 @@
 export interface SensorInfo {
   date: Date;
-  people: number;
+  people: {
+    people: number;
+  };
   co2: number;
   hum: number;
   temp: number;
