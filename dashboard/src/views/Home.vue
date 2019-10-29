@@ -161,7 +161,7 @@
                 type="button"
                 class="btn btn-danger"
                 data-dismiss="modal"
-                v-on:click="resetNumberOfPeople()"
+                v-on:click="resetBackground()"
               >Reset</button>
             </div>
           </div>
@@ -210,7 +210,7 @@ export default class Home extends Vue {
     console.log(result.data);
   }
 
-  private resetNumberOfPeople() {
+  private async resetBackground() {
     this.resetBtnIsClicked = true;
     this.resetBtnDisable = true;
     setTimeout(() => {
