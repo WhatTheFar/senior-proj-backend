@@ -63,26 +63,32 @@
                 Date &amp;
                 <br />Time
               </th>
-              <th scope="col">
-                Number of
-                <br />People
-              </th>
+              <th scope="col">People</th>
               <th scope="col">
                 CO2
                 <br />(ppm)
               </th>
               <th scope="col">
-                Hum
+                Hum1
                 <br />(%)
               </th>
+              <th scope="col">H2</th>
+              <th scope="col">H3</th>
+              <th scope="col">H4</th>
               <th scope="col">
-                Temp
+                Temp1
                 <br />(*C)
               </th>
+              <th scope="col">T2</th>
+              <th scope="col">T3</th>
+              <th scope="col">T4</th>
               <th scope="col">
-                Light
+                Light1
                 <br />(LUX)
               </th>
+              <th scope="col">L2</th>
+              <th scope="col">L3</th>
+              <th scope="col">L4</th>
             </tr>
           </thead>
           <tbody>
