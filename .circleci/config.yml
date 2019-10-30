@@ -44,6 +44,23 @@ jobs:
             - nest/node_modules
           key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
 
+  build:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - run:
+          name: Docker Login
+          command: |
+            echo $DOCKER_PASS_GITHUB | docker login -u whatthefar --password-stdin docker.pkg.github.com
+
+      - run:
+          name: Build
+          command: |
+            chmod +x ./build.sh
+            ./build.sh
+
   deploy:
     machine: true
     working_directory: ~/repo
@@ -111,9 +128,17 @@ workflows:
   build-and-deploy:
     jobs:
       - test
-      - deploy:
+      - build:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - stage
+                - master
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
