@@ -173,7 +173,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { SensorInfo } from "@/types/sensor";
-@Component
+import { mapGetters } from "vuex";
+@Component({
+  computed: {
+    ...mapGetters({
+      sensorInfo: "sensorInfo"
+    })
+  }
+})
 export default class Home extends Vue {
   private numberOfPeople = "0";
   private resetBackgroundTimer = 10;
