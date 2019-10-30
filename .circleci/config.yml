@@ -114,11 +114,6 @@ jobs:
             scp .env $SSH_USER@$SSH_HOST:senior-proj-backend
 
       - run:
-          name: Docker Login
-          command: |
-            echo $DOCKER_PASS_GITHUB | docker login -u whatthefar --password-stdin docker.pkg.github.com
-
-      - run:
           name: Pull Images Over SSH
           command: |
             chmod +x ./scripts/ci-pull-image-ssh.sh
