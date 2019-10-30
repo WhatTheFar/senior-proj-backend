@@ -175,7 +175,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { SensorInfo } from "@/types/sensor";
 @Component
 export default class Home extends Vue {
-  private numberOfPeople = 0;
+  private numberOfPeople = "0";
   private resetBackgroundTimer = 10;
   private resetBtnIsClicked = false;
   private resetBtnDisable = false;
@@ -196,7 +196,7 @@ export default class Home extends Vue {
   }
 
   private async setNumberOfPeople() {
-    if (this.numberOfPeople < 0) {
+    if (parseInt(this.numberOfPeople) < 0) {
       alert(
         "Please input valid number" +
           "\n" +
@@ -205,10 +205,9 @@ export default class Home extends Vue {
     } else {
       console.log("People: " + this.numberOfPeople);
     }
-    const result = await this.axios.put(
-      "/iot/sensor/people/count",
-      this.numberOfPeople
-    );
+    const result = await this.axios.put("/iot/sensor/people/count", {
+      people: parseInt(this.numberOfPeople)
+    });
     console.log(result.data);
   }
 
