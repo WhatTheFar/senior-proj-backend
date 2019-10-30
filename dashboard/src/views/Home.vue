@@ -56,7 +56,7 @@
       <div class="col-12">
         <hr />
         <h2>Data Table</h2>
-        <table class="table">
+        <table v-if="tableData" class="table">
           <thead class="thead-light">
             <tr>
               <th scope="col">
