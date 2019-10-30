@@ -42,6 +42,6 @@ if [[ -n "$nest" ]]; then
 
     echo --- Pushing backend ---
     echo
-    docker tag senior-proj-dashboard docker.pkg.github.com/whatthefar/senior-proj-backend/backend:latest
+    docker tag senior-proj-backend docker.pkg.github.com/whatthefar/senior-proj-backend/backend:latest
     docker push docker.pkg.github.com/whatthefar/senior-proj-backend/backend:latest
 fi
