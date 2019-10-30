@@ -17,6 +17,7 @@ function getSwaggerSchemes(): Array<'http' | 'https'> {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
     .setTitle('Senior Project')
