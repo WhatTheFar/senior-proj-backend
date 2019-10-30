@@ -42,7 +42,7 @@
           >
             Reset Background
             <br />
-            <h5 v-if="resetBtnIsClicked">(10s)</h5>
+            <h5 v-if="resetBtnIsClicked">(60s)</h5>
           </button>
         </div>
       </div>
@@ -221,7 +221,7 @@ export default class Home extends Vue {
       this.resetBtnIsClicked = false;
       this.resetBtnDisable = false;
       alert("Background reset successful!");
-    }, 600000);
+    }, 60 * 1000);
   }
 }
 </script>
