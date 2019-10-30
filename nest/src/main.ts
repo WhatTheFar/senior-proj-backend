@@ -28,6 +28,7 @@ async function bootstrap() {
     .setSchemes(...getSwaggerSchemes())
     .setBasePath(BASE_PREFIX)
     .build();
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-doc', app, document);
 
