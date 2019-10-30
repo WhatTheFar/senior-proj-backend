@@ -61,7 +61,7 @@ jobs:
 
       - compare-url/use:
           step-name: Build
-          command: |
+          custom-logic: |
             chmod +x ./scripts/build.sh
             ./scripts/build.sh
 
@@ -119,7 +119,7 @@ jobs:
 
       - compare-url/use:
           step-name: Pull Images Over SSH
-          command: |
+          custom-logic: |
             chmod +x ./scripts/ci-pull-image-ssh.sh
             ./scripts/ci-pull-image-ssh.sh
 
