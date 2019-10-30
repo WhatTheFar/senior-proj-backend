@@ -69,9 +69,6 @@ jobs:
           fingerprints:
             - 'a8:89:6c:63:2d:eb:24:9e:12:ac:b8:d3:16:da:52:31'
 
-      - attach_workspace:
-          at: ~/repo
-
       - run:
           name: Update PATH and Define Environment Variable at Runtime
           command: |
@@ -115,12 +112,21 @@ jobs:
             scp .env $SSH_USER@$SSH_HOST:senior-proj-backend
 
       - run:
+          name: Docker Login
+          command: |
+            echo $DOCKER_PASS_GITHUB | docker login -u whatthefar --password-stdin docker.pkg.github.com
+
+      - run:
+          name: Pull Images Over SSH
+          command: |
+            chmod +x ./ci-pull-image-ssh.sh
+            ./ci-pull-image-ssh.sh
+
+      - run:
           name: Deploy Over SSH
           command: |
             ssh $SSH_USER@$SSH_HOST "cd senior-proj-backend && \
-            docker image tag senior-proj-backend senior-proj-backend:backup && \
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build backend && \
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate && \
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d && \
             docker image prune -f"
 
 workflows:
