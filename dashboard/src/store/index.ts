@@ -32,7 +32,7 @@ export default new Vuex.Store<Store>({
   },
   actions: {
     startPollingSensorInfo: async ({ commit }) => {
-      const { data } = await Vue.axios.get<SensorInfo>("iot/sensor", {
+      const { data } = await Vue.axios.get<SensorInfo>("/api/iot/sensor", {
         params: {
           offset: 0,
           limit: 10
@@ -40,7 +40,7 @@ export default new Vuex.Store<Store>({
       });
       commit("setSensorInfo", data);
       const interval = setInterval(async () => {
-        const { data } = await Vue.axios.get<SensorInfo>("iot/sensor", {
+        const { data } = await Vue.axios.get<SensorInfo>("/api/iot/sensor", {
           params: {
             offset: 0,
             limit: 10
