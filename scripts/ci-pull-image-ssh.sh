@@ -36,8 +36,8 @@ if [[ -n "$dashboard" ]]; then
     echo
 
     upstream_image=docker.pkg.github.com/whatthefar/senior-proj-backend/dashboard:latest
-    image=senior-proj-dashboard:backup
-    backup_image=senior-proj-dashboard:latest
+    image=senior-proj-dashboard:latest
+    backup_image=senior-proj-dashboard:backup
 
     pull_image
 fi
@@ -47,8 +47,8 @@ if [[ -n "$nest" ]]; then
     echo
 
     upstream_image=docker.pkg.github.com/whatthefar/senior-proj-backend/backend:latest
-    image=senior-proj-backend:backup
-    backup_image=senior-proj-backend:latest
+    image=senior-proj-backend:latest
+    backup_image=senior-proj-backend:backup
 
     pull_image
 fi
