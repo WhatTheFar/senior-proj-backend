@@ -56,7 +56,7 @@
       <div class="col-12">
         <hr />
         <h2>Data Table</h2>
-        <table v-if="tableData" class="table">
+        <table v-if="sensorInfo" class="table">
           <thead class="thead-light">
             <tr>
               <th scope="col">
@@ -92,7 +92,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(value, key) in tableData" :key="key">
+            <tr v-for="(value, key) in sensorInfo" :key="key">
               <th scope="row">{{value.date}}</th>
               <td>{{value.people.people}}</td>
               <td>{{value.co2[0].co2}}</td>
@@ -179,7 +179,7 @@ export default class Home extends Vue {
   private resetBackgroundTimer = 10;
   private resetBtnIsClicked = false;
   private resetBtnDisable = false;
-  private tableData: Array<SensorInfo> = [];
+  private sensorInfo!: Array<SensorInfo>;
 
   async mounted() {
     const result = await this.axios.get<SensorInfo[]>("iot/sensor", {
@@ -192,7 +192,7 @@ export default class Home extends Vue {
   }
 
   get currentNumberOfPeople(): number {
-    return this.tableData.length > 0 ? this.tableData[0].people.people : 0;
+    return this.sensorInfo.length > 0 ? this.sensorInfo[0].people.people : 0;
   }
 
   private async setNumberOfPeople() {
