@@ -153,7 +153,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <p>Wait for 10 seconds to reset the background.</p>
+              <p>Wait for 60 seconds to reset the background.</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
