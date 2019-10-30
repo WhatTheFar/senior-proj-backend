@@ -24,6 +24,7 @@ async function bootstrap() {
     .setDescription('The seniorproj API description')
     .setVersion('1.0')
     .setSchemes(...getSwaggerSchemes())
+    .setBasePath('api')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
