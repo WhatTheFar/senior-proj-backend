@@ -188,14 +188,12 @@ export default class Home extends Vue {
   private resetBtnDisable = false;
   private sensorInfo!: Array<SensorInfo>;
 
-  async mounted() {
-    const result = await this.axios.get<SensorInfo[]>("iot/sensor", {
-      params: {
-        offset: 0,
-        limit: 10
-      }
-    });
-    this.tableData = result.data;
+  mounted() {
+    this.$store.dispatch('startPollingSensorInfo');
+  }
+
+  destroyed() {
+    this.$store.dispatch('stopPollingSensorInfo');
   }
 
   get currentNumberOfPeople(): number {
