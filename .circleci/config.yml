@@ -61,6 +61,7 @@ jobs:
 
       - compare-url/use:
           step-name: Build
+          attach-workspace: true
           custom-logic: |
             chmod +x ./scripts/build.sh
             ./scripts/build.sh
@@ -119,6 +120,7 @@ jobs:
 
       - compare-url/use:
           step-name: Pull Images Over SSH
+          attach-workspace: true
           custom-logic: |
             chmod +x ./scripts/ci-pull-image-ssh.sh
             ./scripts/ci-pull-image-ssh.sh
