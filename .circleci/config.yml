@@ -58,8 +58,8 @@ jobs:
       - run:
           name: Build
           command: |
-            chmod +x ./build.sh
-            ./build.sh
+            chmod +x ./scripts/build.sh
+            ./scripts/build.sh
 
   deploy:
     machine: true
@@ -119,8 +119,8 @@ jobs:
       - run:
           name: Pull Images Over SSH
           command: |
-            chmod +x ./ci-pull-image-ssh.sh
-            ./ci-pull-image-ssh.sh
+            chmod +x ./scripts/ci-pull-image-ssh.sh
+            ./scripts/ci-pull-image-ssh.sh
 
       - run:
           name: Deploy Over SSH
