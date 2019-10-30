@@ -56,6 +56,12 @@ jobs:
             echo $DOCKER_PASS_GITHUB | docker login -u whatthefar --password-stdin docker.pkg.github.com
 
       - run:
+          name: Extract commit range (or single commit).
+          command: |
+            echo "Compare url '${CIRCLE_COMPARE_URL}'"
+            export COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
+
+      - run:
           name: Build
           command: |
             chmod +x ./scripts/build.sh
