@@ -120,6 +120,12 @@ jobs:
             scp .env $SSH_USER@$SSH_HOST:senior-proj-backend
 
       - run:
+          name: Extract commit range (or single commit).
+          command: |
+            echo "Compare url '${CIRCLE_COMPARE_URL}'"
+            export COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
+
+      - run:
           name: Pull Images Over SSH
           command: |
             chmod +x ./scripts/ci-pull-image-ssh.sh
