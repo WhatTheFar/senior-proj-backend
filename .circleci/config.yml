@@ -3,6 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2.0
+
+orbs:
+  compare-url: iynere/compare-url@1.2.0
+
 jobs:
   test:
     docker:
@@ -55,14 +59,8 @@ jobs:
           command: |
             echo $DOCKER_PASS_GITHUB | docker login -u whatthefar --password-stdin docker.pkg.github.com
 
-      - run:
-          name: Extract commit range (or single commit).
-          command: |
-            echo "Compare url '${CIRCLE_COMPARE_URL}'"
-            export COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
-
-      - run:
-          name: Build
+      - compare-url/use:
+          step-name: Build
           command: |
             chmod +x ./scripts/build.sh
             ./scripts/build.sh
@@ -119,14 +117,8 @@ jobs:
             eval "echo \"$(< .env.template)\"" > .env
             scp .env $SSH_USER@$SSH_HOST:senior-proj-backend
 
-      - run:
-          name: Extract commit range (or single commit).
-          command: |
-            echo "Compare url '${CIRCLE_COMPARE_URL}'"
-            export COMMIT_RANGE=$(echo "${CIRCLE_COMPARE_URL}" | cut -d/ -f7)
-
-      - run:
-          name: Pull Images Over SSH
+      - compare-url/use:
+          step-name: Pull Images Over SSH
           command: |
             chmod +x ./scripts/ci-pull-image-ssh.sh
             ./scripts/ci-pull-image-ssh.sh
@@ -143,9 +135,17 @@ workflows:
   build-and-deploy:
     jobs:
       - test
-      - build:
+      - compare-url/reconstruct:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - stage
+                - master
+      - build:
+          requires:
+            - compare-url/reconstruct
           filters:
             branches:
               only:
