@@ -220,8 +220,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { SensorInfo } from "@/types/sensor";
+// import { SensorInfo } from "@/types/sensor";
 import { mapGetters } from "vuex";
+import { SensorInfo } from "../types/sensor";
 @Component({
   computed: {
     ...mapGetters({
