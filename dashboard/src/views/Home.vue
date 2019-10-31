@@ -234,15 +234,15 @@ export default class Home extends Vue {
   private numberOfPeople = "0";
   private resetBackgroundTimer = 10;
   private resetBtnIsClicked = false;
-  private resetBtnDisable = false;
+  // private resetBtnDisable = false;
   private sensorInfo!: Array<SensorInfo>;
 
   mounted() {
-    this.$store.dispatch('startPollingSensorInfo');
+    this.$store.dispatch("startPollingSensorInfo");
   }
 
   destroyed() {
-    this.$store.dispatch('stopPollingSensorInfo');
+    this.$store.dispatch("stopPollingSensorInfo");
   }
 
   get currentNumberOfPeople(): number {
