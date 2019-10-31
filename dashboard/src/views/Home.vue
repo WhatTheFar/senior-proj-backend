@@ -1,5 +1,5 @@
 <template>
-  <div class="home container">
+  <div class="home container" style="font-size:12px;">
     <div class="row justify-content-md-center">
       <img
         src="https://onefact.net/wp-content/uploads/2016/06/seniorproject.png"
