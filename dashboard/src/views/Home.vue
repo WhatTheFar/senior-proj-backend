@@ -39,18 +39,14 @@
             data-toggle="modal"
             data-target="#confirmResetModal"
             :disabled="resetBtnDisable"
-          >
-            Reset Background
-            <br />
-            <h5 v-if="resetBtnIsClicked">(60s)</h5>
-          </button>
+          >Reset Background</button>
         </div>
       </div>
       <!-- Reset button loading -->
-      <div class="d-flex align-items-center" v-if="resetBtnDisable" style="margin:10px">
+      <!-- <div class="d-flex align-items-center" v-if="resetBtnDisable" style="margin:10px">
         <strong>Processing...</strong>
         <div class="spinner-border ml-auto" role="status" aria-hidden="true" style="margin:20px;"></div>
-      </div>
+      </div>-->
 
       <!-- Table -->
       <div class="col-12">
