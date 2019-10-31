@@ -267,12 +267,12 @@ export default class Home extends Vue {
 
   private async resetBackground() {
     this.resetBtnIsClicked = true;
-    this.resetBtnDisable = true;
+    // this.resetBtnDisable = true;
     const result = await this.axios.put("/iot/sensor/people/bg");
     console.log(result.data);
     setTimeout(() => {
       this.resetBtnIsClicked = false;
-      this.resetBtnDisable = false;
+      // this.resetBtnDisable = false;
       alert("Background reset successful!");
     }, 60 * 1000);
   }
