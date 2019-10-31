@@ -12,10 +12,10 @@ interface Store {
 export default new Vuex.Store<Store>({
   state: {
     sensorInfo: [],
-    currentInterval: -1
+    currentInterval: -1,
   },
   getters: {
-    sensorInfo: ({ sensorInfo }) => sensorInfo
+    sensorInfo: ({ sensorInfo }) => sensorInfo,
     /*
       sensorInfo: (state) => {
         return state.sensorInfo,
