@@ -210,7 +210,7 @@ export default class Home extends Vue {
     } else {
       console.log("People: " + this.numberOfPeople);
     }
-    const result = await this.axios.put("/api/iot/sensor/people/count", {
+    const result = await this.axios.put("/iot/sensor/people/count", {
       people: parseInt(this.numberOfPeople)
     });
     console.log(result.data);
@@ -219,7 +219,7 @@ export default class Home extends Vue {
   private async resetBackground() {
     this.resetBtnIsClicked = true;
     this.resetBtnDisable = true;
-    const result = await this.axios.put("/api/iot/sensor/people/bg");
+    const result = await this.axios.put("/iot/sensor/people/bg");
     console.log(result.data);
     setTimeout(() => {
       this.resetBtnIsClicked = false;
