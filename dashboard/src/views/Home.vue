@@ -89,21 +89,73 @@
           </thead>
           <tbody>
             <tr v-for="(value, key) in sensorInfo" :key="key">
-              <th scope="row">{{value.date}}</th>
+              <td scope="row">{{value.date}}</td>
               <td>{{value.people.people}}</td>
-              <td>{{value.co2[0].co2}}</td>
-              <td>{{value.multi[0].hum}}</td>
-              <td>{{value.multi[1].hum}}</td>
-              <td>{{value.multi[2].hum}}</td>
-              <td>{{value.multi[3].hum}}</td>
-              <td>{{value.multi[0].temp}}</td>
-              <td>{{value.multi[1].temp}}</td>
-              <td>{{value.multi[2].temp}}</td>
-              <td>{{value.multi[3].temp}}</td>
-              <td>{{value.multi[0].light}}</td>
-              <td>{{value.multi[1].light}}</td>
-              <td>{{value.multi[2].light}}</td>
-              <td>{{value.multi[3].light}}</td>
+              <td>
+                {{value.co2[0].co2}}
+                <br />
+                ({{value.co2[0].device}})
+              </td>
+              <td>
+                {{value.multi[0].hum}}
+                <br />
+                ({{value.multi[0].device}})
+              </td>
+              <td>
+                {{value.multi[1].hum}}
+                <br />
+                ({{value.multi[1].device}})
+              </td>
+              <td>
+                {{value.multi[2].hum}}
+                <br />
+                ({{value.multi[2].device}})
+              </td>
+              <td>
+                {{value.multi[3].hum}}
+                <br />
+                ({{value.multi[3].device}})
+              </td>
+              <td>
+                {{value.multi[0].temp}}
+                <br />
+                ({{value.multi[0].device}})
+              </td>
+              <td>
+                {{value.multi[1].temp}}
+                <br />
+                ({{value.multi[1].device}})
+              </td>
+              <td>
+                {{value.multi[2].temp}}
+                <br />
+                ({{value.multi[2].device}})
+              </td>
+              <td>
+                {{value.multi[3].temp}}
+                <br />
+                ({{value.multi[3].device}})
+              </td>
+              <td>
+                {{value.multi[0].light}}
+                <br />
+                ({{value.multi[0].device}})
+              </td>
+              <td>
+                {{value.multi[1].light}}
+                <br />
+                ({{value.multi[1].device}})
+              </td>
+              <td>
+                {{value.multi[2].light}}
+                <br />
+                ({{value.multi[2].device}})
+              </td>
+              <td>
+                {{value.multi[3].light}}
+                <br />
+                ({{value.multi[3].device}})
+              </td>
             </tr>
           </tbody>
         </table>
