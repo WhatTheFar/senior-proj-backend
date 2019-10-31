@@ -14,19 +14,15 @@ function getSwaggerSchemes(): Array<'http' | 'https'> {
   }
 }
 
-const BASE_PREFIX = 'api';
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix(BASE_PREFIX);
 
   const options = new DocumentBuilder()
     .setTitle('Senior Project')
     .setDescription('The seniorproj API description')
     .setVersion('1.0')
     .setSchemes(...getSwaggerSchemes())
-    .setBasePath(BASE_PREFIX)
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-doc', app, document);
