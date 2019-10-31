@@ -66,9 +66,9 @@ services:
     build: nest
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.backend_insecure.rule=Host(`seniorproj.thinc.in.th`) && PathPrefix(`/api`)'
+      - 'traefik.http.routers.backend_insecure.rule=Host(`seniorproj.thinc.in.th`) && PathPrefix(`/iot`)'
       - 'traefik.http.routers.backend_insecure.entrypoints=web'
-      - 'traefik.http.routers.backend.rule=Host(`seniorproj.thinc.in.th`) && PathPrefix(`/api`)'
+      - 'traefik.http.routers.backend.rule=Host(`seniorproj.thinc.in.th`) && PathPrefix(`/iot`)'
       - 'traefik.http.routers.backend.entrypoints=websecure'
       - 'traefik.http.routers.backend.tls.certresolver=myhttpchallenge'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
