@@ -89,72 +89,36 @@
           </thead>
           <tbody>
             <tr v-for="(value, key) in sensorInfo" :key="key">
-              <td scope="row">{{value.date}}</td>
+              <td scope="row">{{new Date(value.date).toString()}}</td>
               <td>{{value.people.people}}</td>
               <td>
                 {{value.co2[0].co2}}
                 <br />
                 ({{value.co2[0].device}})
               </td>
-              <td>
-                {{value.multi[0].hum}}
+              <td
+                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
+                :key="'multi-device-' + key"
+              >
+                {{multi.hum}}
                 <br />
-                ({{value.multi[0].device}})
+                ({{multi.device}})
               </td>
-              <td>
-                {{value.multi[1].hum}}
+              <td
+                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
+                :key="'multi-temp-' + key"
+              >
+                {{multi.temp}}
                 <br />
-                ({{value.multi[1].device}})
+                ({{multi.device}})
               </td>
-              <td>
-                {{value.multi[2].hum}}
+              <td
+                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
+                :key="'multi-light-' + key"
+              >
+                {{multi.light}}
                 <br />
-                ({{value.multi[2].device}})
-              </td>
-              <td>
-                {{value.multi[3].hum}}
-                <br />
-                ({{value.multi[3].device}})
-              </td>
-              <td>
-                {{value.multi[0].temp}}
-                <br />
-                ({{value.multi[0].device}})
-              </td>
-              <td>
-                {{value.multi[1].temp}}
-                <br />
-                ({{value.multi[1].device}})
-              </td>
-              <td>
-                {{value.multi[2].temp}}
-                <br />
-                ({{value.multi[2].device}})
-              </td>
-              <td>
-                {{value.multi[3].temp}}
-                <br />
-                ({{value.multi[3].device}})
-              </td>
-              <td>
-                {{value.multi[0].light}}
-                <br />
-                ({{value.multi[0].device}})
-              </td>
-              <td>
-                {{value.multi[1].light}}
-                <br />
-                ({{value.multi[1].device}})
-              </td>
-              <td>
-                {{value.multi[2].light}}
-                <br />
-                ({{value.multi[2].device}})
-              </td>
-              <td>
-                {{value.multi[3].light}}
-                <br />
-                ({{value.multi[3].device}})
+                ({{multi.device}})
               </td>
             </tr>
           </tbody>
@@ -239,6 +203,7 @@ export default class Home extends Vue {
 
   mounted() {
     this.$store.dispatch("startPollingSensorInfo");
+    // console.log(this.sensorInfo[0].multi.sort((a, b) => a.device - b.device));
   }
 
   destroyed() {
