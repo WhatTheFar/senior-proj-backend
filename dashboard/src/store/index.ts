@@ -1,6 +1,6 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import { SensorInfo } from "@/types/sensor";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { SensorInfo } from '@/types/sensor';
 
 Vue.use(Vuex);
 
@@ -28,32 +28,32 @@ export default new Vuex.Store<Store>({
     },
     setInterval: (state, payload) => {
       state.currentInterval = payload;
-    }
+    },
   },
   actions: {
     startPollingSensorInfo: async ({ commit }) => {
-      const { data } = await Vue.axios.get<SensorInfo>("iot/sensor", {
+      const { data } = await Vue.axios.get<SensorInfo>('iot/sensor', {
         params: {
           offset: 0,
-          limit: 10
-        }
+          limit: 10,
+        },
       });
-      commit("setSensorInfo", data);
+      commit('setSensorInfo', data);
       const interval = setInterval(async () => {
-        const { data } = await Vue.axios.get<SensorInfo>("iot/sensor", {
+        const { data } = await Vue.axios.get<SensorInfo>('iot/sensor', {
           params: {
             offset: 0,
-            limit: 10
-          }
+            limit: 10,
+          },
         });
-        commit("setSensorInfo", data);
+        commit('setSensorInfo', data);
       }, 30 * 1000);
-      commit("setInterval", interval);
+      commit('setInterval', interval);
     },
     stopPollingSensorInfo: ({ state, commit }) => {
       clearInterval(state.currentInterval);
-      commit("setInterval", -1);
-    }
+      commit('setInterval', -1);
+    },
   },
-  modules: {}
+  modules: {},
 });
