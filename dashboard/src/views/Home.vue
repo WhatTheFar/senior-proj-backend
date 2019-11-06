@@ -28,7 +28,6 @@
             type="button"
             data-toggle="modal"
             data-target="#confirmSetModal"
-            :disabled="resetBtnDisable"
             style="paddingLeft:25px;paddingRight:25px;"
           >
             <b>SET</b>
@@ -38,15 +37,9 @@
             type="button"
             data-toggle="modal"
             data-target="#confirmResetModal"
-            :disabled="resetBtnDisable"
           >Reset Background</button>
         </div>
       </div>
-      <!-- Reset button loading -->
-      <!-- <div class="d-flex align-items-center" v-if="resetBtnDisable" style="margin:10px">
-        <strong>Processing...</strong>
-        <div class="spinner-border ml-auto" role="status" aria-hidden="true" style="margin:20px;"></div>
-      </div>-->
 
       <!-- Table -->
       <div class="col-12">
@@ -198,7 +191,6 @@ export default class Home extends Vue {
   private numberOfPeople = "0";
   private resetBackgroundTimer = 10;
   private resetBtnIsClicked = false;
-  // private resetBtnDisable = false;
   private sensorInfo!: Array<SensorInfo>;
 
   mounted() {
@@ -232,14 +224,8 @@ export default class Home extends Vue {
 
   private async resetBackground() {
     this.resetBtnIsClicked = true;
-    // this.resetBtnDisable = true;
     const result = await this.axios.put("/iot/sensor/people/bg");
     console.log(result.data);
-    setTimeout(() => {
-      this.resetBtnIsClicked = false;
-      // this.resetBtnDisable = false;
-      alert("Background reset successful!");
-    }, 60 * 1000);
   }
 }
 </script>
