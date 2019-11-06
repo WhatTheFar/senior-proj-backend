@@ -85,34 +85,82 @@
               <td scope="row">{{new Date(value.date).toLocaleString('en-GB')}}</td>
               <td>{{value.people.people}}</td>
               <td>
-                {{value.co2[0].co2}}
+                {{value.co2.length > 0 ? value.co2[0].co2: "-"}}
                 <br />
-                ({{value.co2[0].device}})
+                ({{value.co2.length > 0 ? value.co2[0].device: "-"}})
               </td>
-              <td
-                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
-                :key="'multi-device-' + key"
-              >
-                {{multi.hum}}
+
+              <td>
+                {{value.multi.length > 0 ? value.multi[0].hum: "-"}}
                 <br />
-                ({{multi.device}})
+                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
               </td>
-              <td
-                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
-                :key="'multi-temp-' + key"
-              >
-                {{multi.temp}}
+              <td>
+                {{value.multi.length > 0 ? value.multi[1].hum: "-"}}
                 <br />
-                ({{multi.device}})
+                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
               </td>
-              <td
+              <td>
+                {{value.multi.length > 0 ? value.multi[2].hum: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[3].hum: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
+              </td>
+
+              <td>
+                {{value.multi.length > 0 ? value.multi[0].temp: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[1].temp: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[2].temp: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[3].temp: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
+              </td>
+
+              <td>
+                {{value.multi.length > 0 ? value.multi[0].light: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[1].light: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[2].light: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
+              </td>
+              <td>
+                {{value.multi.length > 0 ? value.multi[3].light: "-"}}
+                <br />
+                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
+              </td>
+
+              <!-- <td
                 v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
                 :key="'multi-light-' + key"
               >
                 {{multi.light}}
                 <br />
                 ({{multi.device}})
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
