@@ -15,7 +15,12 @@ export default new Vuex.Store<Store>({
     currentInterval: -1,
   },
   getters: {
-    sensorInfo: ({ sensorInfo }) => sensorInfo,
+    sensorInfo: ({ sensorInfo }) => {
+      sensorInfo.forEach((o) => {
+        o.multi.sort((a, b) => a.device - b.device);
+      });
+      return sensorInfo;
+    },
     /*
       sensorInfo: (state) => {
         return state.sensorInfo,
