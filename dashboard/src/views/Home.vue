@@ -82,7 +82,7 @@
           </thead>
           <tbody>
             <tr v-for="(value, key) in sensorInfo" :key="key">
-              <td scope="row">{{new Date(value.date).toString()}}</td>
+              <td scope="row">{{new Date(value.date).toLocaleString('en-GB')}}</td>
               <td>{{value.people.people}}</td>
               <td>
                 {{value.co2[0].co2}}
