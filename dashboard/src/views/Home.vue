@@ -5,7 +5,7 @@
         src="https://onefact.net/wp-content/uploads/2016/06/seniorproject.png"
         class="img-fluid"
         alt="Responsive image"
-        style="width:50%;height:50%;margin:20px;"
+        style="width:25%;height:25%;margin:20px;"
       />
       <div class="col-12">
         <!-- Set the number of people -->
