@@ -195,7 +195,6 @@ export default class Home extends Vue {
 
   mounted() {
     this.$store.dispatch("startPollingSensorInfo");
-    // console.log(this.sensorInfo[0].multi.sort((a, b) => a.device - b.device));
   }
 
   destroyed() {
