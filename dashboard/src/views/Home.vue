@@ -91,66 +91,66 @@
               </td>
 
               <td>
-                {{value.multi.length > 0 ? value.multi[0].hum: "-"}}
+                {{value.multi[0] ? value.multi[0].hum: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
+                ({{value.multi[0] ? value.multi[0].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[1].hum: "-"}}
+                {{value.multi[1] ? value.multi[1].hum: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
+                ({{value.multi[1] ? value.multi[1].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[2].hum: "-"}}
+                {{value.multi[2] ? value.multi[2].hum: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
+                ({{value.multi[2] ? value.multi[2].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[3].hum: "-"}}
+                {{value.multi[3] ? value.multi[3].hum: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
-              </td>
-
-              <td>
-                {{value.multi.length > 0 ? value.multi[0].temp: "-"}}
-                <br />
-                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
-              </td>
-              <td>
-                {{value.multi.length > 0 ? value.multi[1].temp: "-"}}
-                <br />
-                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
-              </td>
-              <td>
-                {{value.multi.length > 0 ? value.multi[2].temp: "-"}}
-                <br />
-                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
-              </td>
-              <td>
-                {{value.multi.length > 0 ? value.multi[3].temp: "-"}}
-                <br />
-                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
+                ({{value.multi[3] ? value.multi[3].device: "-"}})
               </td>
 
               <td>
-                {{value.multi.length > 0 ? value.multi[0].light: "-"}}
+                {{value.multi[0] ? value.multi[0].temp: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[0].device: "-"}})
+                ({{value.multi[0] ? value.multi[0].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[1].light: "-"}}
+                {{value.multi[1] ? value.multi[1].temp: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[1].device: "-"}})
+                ({{value.multi[1] ? value.multi[1].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[2].light: "-"}}
+                {{value.multi[2] ? value.multi[2].temp: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[2].device: "-"}})
+                ({{value.multi[2] ? value.multi[2].device: "-"}})
               </td>
               <td>
-                {{value.multi.length > 0 ? value.multi[3].light: "-"}}
+                {{value.multi[3] ? value.multi[3].temp: "-"}}
                 <br />
-                ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
+                ({{value.multi[3] ? value.multi[3].device: "-"}})
+              </td>
+
+              <td>
+                {{value.multi[0] ? value.multi[0].light: "-"}}
+                <br />
+                ({{value.multi[0] ? value.multi[0].device: "-"}})
+              </td>
+              <td>
+                {{value.multi[1] ? value.multi[1].light: "-"}}
+                <br />
+                ({{value.multi[1] ? value.multi[1].device: "-"}})
+              </td>
+              <td>
+                {{value.multi[2] ? value.multi[2].light: "-"}}
+                <br />
+                ({{value.multi[2] ? value.multi[2].device: "-"}})
+              </td>
+              <td>
+                {{value.multi[3] ? value.multi[3].light: "-"}}
+                <br />
+                ({{value.multi[3] ? value.multi[3].device: "-"}})
               </td>
             </tr>
           </tbody>
