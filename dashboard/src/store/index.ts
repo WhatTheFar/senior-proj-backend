@@ -18,8 +18,23 @@ export default new Vuex.Store<Store>({
     sensorInfo: ({ sensorInfo }) => sensorInfo,
   },
   mutations: {
-    setSensorInfo: (state, payload) => {
-      state.sensorInfo = payload;
+    setSensorInfo: (state, payload: SensorInfo[]) => {
+      const sortedPayload: SensorInfo[] = JSON.parse(JSON.stringify(payload));
+      sortedPayload.forEach((o) => (o.multi = []));
+      payload.forEach((obj, index) => {
+        obj.multi.forEach((e) => {
+          if (e.device === 1) {
+            sortedPayload[index].multi[0] = e;
+          } else if (e.device === 2) {
+            sortedPayload[index].multi[1] = e;
+          } else if (e.device === 3) {
+            sortedPayload[index].multi[2] = e;
+          } else if (e.device === 4) {
+            sortedPayload[index].multi[3] = e;
+          }
+        });
+      });
+      state.sensorInfo = sortedPayload;
     },
     setInterval: (state, payload) => {
       state.currentInterval = payload;
