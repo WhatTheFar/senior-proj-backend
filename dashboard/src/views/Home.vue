@@ -215,29 +215,29 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 // import { SensorInfo } from "@/types/sensor";
-import { mapGetters } from "vuex";
-import { SensorInfo } from "../types/sensor";
+import { mapGetters } from 'vuex';
+import { SensorInfo } from '../types/sensor';
 @Component({
   computed: {
     ...mapGetters({
-      sensorInfo: "sensorInfo"
-    })
-  }
+      sensorInfo: 'sensorInfo',
+    }),
+  },
 })
 export default class Home extends Vue {
-  private numberOfPeople = "0";
+  private numberOfPeople = '0';
   private resetBackgroundTimer = 10;
   private resetBtnIsClicked = false;
   private sensorInfo!: Array<SensorInfo>;
 
   mounted() {
-    this.$store.dispatch("startPollingSensorInfo");
+    this.$store.dispatch('startPollingSensorInfo');
   }
 
   destroyed() {
-    this.$store.dispatch("stopPollingSensorInfo");
+    this.$store.dispatch('stopPollingSensorInfo');
   }
 
   get currentNumberOfPeople(): number {
@@ -247,22 +247,22 @@ export default class Home extends Vue {
   private async setNumberOfPeople() {
     if (parseInt(this.numberOfPeople) < 0) {
       alert(
-        "Please input valid number" +
-          "\n" +
-          "The number must be equal or more than 0"
+        'Please input valid number' +
+          '\n' +
+          'The number must be equal or more than 0',
       );
     } else {
-      console.log("People: " + this.numberOfPeople);
+      console.log('People: ' + this.numberOfPeople);
     }
-    const result = await this.axios.put("/iot/sensor/people/count", {
-      people: parseInt(this.numberOfPeople)
+    const result = await this.axios.put('/iot/sensor/people/count', {
+      people: parseInt(this.numberOfPeople),
     });
     console.log(result.data);
   }
 
   private async resetBackground() {
     this.resetBtnIsClicked = true;
-    const result = await this.axios.put("/iot/sensor/people/bg");
+    const result = await this.axios.put('/iot/sensor/people/bg');
     console.log(result.data);
   }
 }
