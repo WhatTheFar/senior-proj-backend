@@ -152,15 +152,6 @@
                 <br />
                 ({{value.multi.length > 0 ? value.multi[3].device: "-"}})
               </td>
-
-              <!-- <td
-                v-for="(multi, key) in value.multi.sort((a,b) => a.device - b.device)"
-                :key="'multi-light-' + key"
-              >
-                {{multi.light}}
-                <br />
-                ({{multi.device}})
-              </td> -->
             </tr>
           </tbody>
         </table>
