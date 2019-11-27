@@ -83,7 +83,7 @@
           <tbody>
             <tr v-for="(value, key) in sensorInfo" :key="key">
               <td scope="row">{{new Date(value.date).toLocaleString('en-GB')}}</td>
-              <td>{{value.people.people}}</td>
+              <td>{{value.people ? value.people.people : "-"}}</td>
               <td>
                 {{value.co2.length > 0 ? value.co2[0].co2: "-"}}
                 <br />
@@ -240,8 +240,12 @@ export default class Home extends Vue {
     this.$store.dispatch('stopPollingSensorInfo');
   }
 
-  get currentNumberOfPeople(): number {
-    return this.sensorInfo.length > 0 ? this.sensorInfo[0].people.people : 0;
+  get currentNumberOfPeople(): string {
+    if (this.sensorInfo.length > 0 && this.sensorInfo[0].people) {
+      return this.sensorInfo[0].people.people + '';
+    } else {
+      return '-';
+    }
   }
 
   private async setNumberOfPeople() {
