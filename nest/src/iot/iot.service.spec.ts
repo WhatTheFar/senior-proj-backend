@@ -63,8 +63,10 @@ describe('IotService', () => {
     expect(service).toBeDefined();
   });
 
-  const date = new Date();
-  const actualDate = new Date();
+  const date = new Date('2020-01-01T09:00:00.000Z');
+  const actualDate = new Date('2020-01-01T09:00:00.000Z');
+  const tomorrowDate = new Date('2020-01-02T10:00:00.000Z');
+  const actualTomorrowDate = new Date('2020-01-02T10:00:00.000Z');
   const device = 1;
 
   const people = 1;
@@ -141,6 +143,66 @@ describe('IotService', () => {
             date,
             people: basePeople,
             co2: expectedCo2,
+          });
+        });
+
+        describe('When savePeopleNumber called on tomorrow date', () => {
+          beforeEach(async () => {
+            await service.savePeopleNumber(tomorrowDate, {
+              ...peoplePayload,
+              actualDate: actualTomorrowDate,
+            });
+          });
+
+          describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(exclusive)', () => {
+            let allSensors: IotDto[];
+            beforeEach(async () => {
+              allSensors = await service.getAllSensorsByDate({
+                start: date,
+                end: tomorrowDate,
+              });
+            });
+
+            it('Then it should return an array w/ 1 elem', () => {
+              expect(allSensors.length).toEqual(1);
+              expect(allSensors[0]).toEqual({
+                ...baseIotDoc,
+                date,
+                people: { ...basePeople, actualDate },
+                co2: expectedCo2,
+              });
+            });
+          });
+
+          describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(inclusive)', () => {
+            let allSensors: IotDto[];
+            beforeEach(async () => {
+              const tomorrowWithExtraMin = new Date(tomorrowDate);
+              tomorrowWithExtraMin.setMinutes(
+                tomorrowWithExtraMin.getMinutes() + 1,
+              );
+
+              allSensors = await service.getAllSensorsByDate({
+                start: date,
+                end: tomorrowWithExtraMin,
+              });
+            });
+
+            it('Then it should return an array w/ 2 elem', () => {
+              expect(allSensors.length).toEqual(2);
+              expect(allSensors[0]).toEqual({
+                ...baseIotDoc,
+                date: tomorrowDate,
+                people: { ...basePeople, actualDate: actualTomorrowDate },
+                // co2: baseCo2,
+              });
+              expect(allSensors[1]).toEqual({
+                ...baseIotDoc,
+                date,
+                people: { ...basePeople, actualDate },
+                co2: expectedCo2,
+              });
+            });
           });
         });
 

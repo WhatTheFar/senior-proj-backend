@@ -57,6 +57,28 @@ export class IotService {
     return query.map(o => o.toObject());
   }
 
+  async getAllSensorsByDate(options?: {
+    start?: Date;
+    end?: Date;
+  }): Promise<IotDto[]> {
+    const { start, end } = options;
+
+    const dateMatch = {} as any;
+    if (start != null) {
+      dateMatch.$gte = start;
+    }
+    if (end != null) {
+      dateMatch.$lt = end;
+    }
+
+    const query = await this.iotModel
+      .find({ date: dateMatch })
+      .sort({ date: -1 })
+      .exec();
+
+    return query.map(o => o.toObject());
+  }
+
   async savePeopleNumber(
     date: Date,
     payload: { actualDate: Date; people: number },
