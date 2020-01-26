@@ -1,4 +1,3 @@
-import { IIot } from './iot.model';
 import { Response } from 'express';
 import { IotService } from './iot.service';
 import {
