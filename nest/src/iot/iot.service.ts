@@ -79,6 +79,60 @@ export class IotService {
     return query.map(o => o.toObject());
   }
 
+  async getAllSensorsCSV(options?: {
+    start?: Date;
+    end?: Date;
+  }): Promise<string> {
+    const { start, end } = options;
+
+    const sensors = await this.getAllSensorsByDate({ start, end });
+    let csvString =
+      'date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4';
+
+    sensors.forEach(row => {
+      csvString += `
+${row.date.toISOString()}`;
+      csvString += `,${row.people ? row.people.people : '-'}`;
+      csvString += `,${row.co2[0] ? row.co2[0].co2 : '-'}`;
+
+      const sortedMulti =
+        row.multi != null
+          ? row.multi.sort((l, r) => {
+              return l.device - r.device;
+            })
+          : [];
+
+      let humString = '';
+      let tempString = '';
+      let lightString = '';
+
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0, device = 1; device <= 4; device++) {
+        const multi = sortedMulti[i];
+
+        if (device > 1) {
+          humString += ',';
+          tempString += ',';
+          lightString += ',';
+        }
+        if (multi == null || device < multi.device) {
+          humString += '-';
+          tempString += '-';
+          lightString += '-';
+        } else {
+          humString += multi.hum || '-';
+          tempString += multi.temp || '-';
+          lightString += multi.light || '-';
+          i++;
+        }
+      }
+
+      csvString += `,${humString},${tempString},${lightString}`;
+    });
+
+    return csvString;
+  }
+
   async savePeopleNumber(
     date: Date,
     payload: { actualDate: Date; people: number },

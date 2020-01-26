@@ -154,6 +154,38 @@ describe('IotService', () => {
             });
           });
 
+          describe('saveMultiSensors called with device 3 on the same date', () => {
+            beforeEach(async () => {
+              await service.saveMultiSensors(date, {
+                ...multiPayload,
+                device: 3,
+              });
+            });
+
+            describe('When getAllSensorsCSV called with date inclusively', () => {
+              let csv: string;
+              beforeEach(async () => {
+                const tomorrowWithExtraMin = new Date(tomorrowDate);
+                tomorrowWithExtraMin.setMinutes(
+                  tomorrowWithExtraMin.getMinutes() + 1,
+                );
+
+                csv = await service.getAllSensorsCSV({
+                  start: date,
+                  end: tomorrowWithExtraMin,
+                });
+              });
+
+              const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
+${tomorrowDate.toISOString()},${people},-,-,-,-,-,-,-,-,-,-,-,-,-
+${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-`;
+
+              it('Then it should return a csv w/ 1 row', () => {
+                expect(csv).toEqual(expectedCsv);
+              });
+            });
+          });
+
           describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(exclusive)', () => {
             let allSensors: IotDto[];
             beforeEach(async () => {
