@@ -26,6 +26,24 @@ export class GetAllSensorsQuery {
   limit: string;
 }
 
+export class GetAllSensorsByDateQuery {
+  @IsDateString()
+  @ApiModelProperty({
+    example: '2020-01-01T09:00:00.000Z',
+    required: false,
+    default: '2020-01-01T09:00:00.000Z',
+  })
+  start: string;
+
+  @IsDateString()
+  @ApiModelProperty({
+    example: '2020-01-02T09:00:00.000Z',
+    required: false,
+    default: '2020-01-02T09:00:00.000Z',
+  })
+  end: string;
+}
+
 export class PutCountDto {
   @IsInt()
   @ApiModelProperty()

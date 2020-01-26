@@ -1,4 +1,5 @@
 import { IIot } from './iot.model';
+import { Response } from 'express';
 import { IotService } from './iot.service';
 import {
   MultiSensorsDto,
@@ -7,6 +8,7 @@ import {
   PutCountDto,
   GetAllSensorsQuery,
   IotDto,
+  GetAllSensorsByDateQuery,
 } from './iot.dto';
 import {
   Controller,
@@ -17,6 +19,7 @@ import {
   Put,
   Get,
   Query,
+  Res,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 
@@ -33,6 +36,22 @@ export class IotController {
       offset: parseInt(offset, 10),
       limit: parseInt(limit, 10),
     });
+  }
+
+  @Get('sensor-csv')
+  @ApiOkResponse({ type: String })
+  async getAllSensorsCSV(
+    @Query() query: GetAllSensorsByDateQuery,
+    @Res() res: Response,
+  ) {
+    const { start, end } = query;
+    const csvString = await this.iotService.getAllSensorsCSV({
+      start: new Date(start),
+      end: new Date(end),
+    });
+    res.set('Content-Disposition', 'attachment; filename="sensors.csv"');
+    res.contentType('application/csv');
+    res.send(csvString);
   }
 
   @Put('sensor/people/count')
