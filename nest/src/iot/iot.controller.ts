@@ -44,10 +44,11 @@ export class IotController {
     @Query() query: GetAllSensorsByDateQuery,
     @Res() res: Response,
   ) {
-    const { start, end } = query;
+    const { start, end, skip } = query;
     const csvStringStream = this.iotService.getAllSensorsCSV({
       start: new Date(start),
       end: new Date(end),
+      skip: skip === 'true' ? true : false,
     });
     res.set('Content-Disposition', 'attachment; filename="sensors.csv"');
     res.contentType('application/csv');

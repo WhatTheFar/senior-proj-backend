@@ -4,6 +4,7 @@ import {
   IsPositive,
   IsInt,
   IsNumberString,
+  IsBooleanString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiModelProperty } from '@nestjs/swagger';
@@ -42,6 +43,14 @@ export class GetAllSensorsByDateQuery {
     default: '2020-01-02T09:00:00.000Z',
   })
   end: string;
+
+  @IsBooleanString()
+  @ApiModelProperty({
+    example: 'true',
+    required: false,
+    default: 'true',
+  })
+  skip: string;
 }
 
 export class PutCountDto {
