@@ -163,17 +163,21 @@ describe('IotService', () => {
             });
 
             describe('When getAllSensorsCSV called with date inclusively', () => {
-              let csv: string;
+              let csv: string = '';
               beforeEach(async () => {
                 const tomorrowWithExtraMin = new Date(tomorrowDate);
                 tomorrowWithExtraMin.setMinutes(
                   tomorrowWithExtraMin.getMinutes() + 1,
                 );
 
-                csv = await service.getAllSensorsCSV({
+                const generator = service.getAllSensorsCSV({
                   start: date,
                   end: tomorrowWithExtraMin,
                 });
+
+                for await (const e of generator) {
+                  csv += e;
+                }
               });
 
               const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
@@ -187,12 +191,15 @@ ${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-
           });
 
           describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(exclusive)', () => {
-            let allSensors: IotDto[];
+            const allSensors: IotDto[] = [];
             beforeEach(async () => {
-              allSensors = await service.getAllSensorsByDate({
+              const generator = await service.getAllSensorsByDate({
                 start: date,
                 end: tomorrowDate,
               });
+              for await (const e of generator) {
+                allSensors.push(e);
+              }
             });
 
             it('Then it should return an array w/ 1 elem', () => {
@@ -207,17 +214,20 @@ ${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-
           });
 
           describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(inclusive)', () => {
-            let allSensors: IotDto[];
+            const allSensors: IotDto[] = [];
             beforeEach(async () => {
               const tomorrowWithExtraMin = new Date(tomorrowDate);
               tomorrowWithExtraMin.setMinutes(
                 tomorrowWithExtraMin.getMinutes() + 1,
               );
 
-              allSensors = await service.getAllSensorsByDate({
+              const generator = await service.getAllSensorsByDate({
                 start: date,
                 end: tomorrowWithExtraMin,
               });
+              for await (const e of generator) {
+                allSensors.push(e);
+              }
             });
 
             it('Then it should return an array w/ 2 elem', () => {

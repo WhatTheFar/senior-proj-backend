@@ -21,6 +21,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
+import { Readable } from 'stream';
 
 @ApiUseTags('iot')
 @Controller('iot')
@@ -44,13 +45,13 @@ export class IotController {
     @Res() res: Response,
   ) {
     const { start, end } = query;
-    const csvString = await this.iotService.getAllSensorsCSV({
+    const csvStringStream = this.iotService.getAllSensorsCSV({
       start: new Date(start),
       end: new Date(end),
     });
     res.set('Content-Disposition', 'attachment; filename="sensors.csv"');
     res.contentType('application/csv');
-    res.send(csvString);
+    Readable.from(csvStringStream).pipe(res);
   }
 
   @Put('sensor/people/count')

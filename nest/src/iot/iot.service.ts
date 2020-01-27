@@ -57,10 +57,10 @@ export class IotService {
     return query.map(o => o.toObject());
   }
 
-  async getAllSensorsByDate(options?: {
+  async *getAllSensorsByDate(options?: {
     start?: Date;
     end?: Date;
-  }): Promise<IotDto[]> {
+  }): AsyncGenerator<IotDto> {
     const { start, end } = options;
 
     const dateMatch = {} as any;
@@ -71,27 +71,29 @@ export class IotService {
       dateMatch.$lt = end;
     }
 
-    const query = await this.iotModel
+    const cursor = this.iotModel
       .find({ date: dateMatch })
       .sort({ date: -1 })
-      .exec();
+      .cursor();
 
-    return query.map(o => o.toObject());
+    for await (const doc of cursor) {
+      yield (doc as IIot).toObject();
+    }
   }
 
-  async getAllSensorsCSV(options?: {
+  async *getAllSensorsCSV(options?: {
     start?: Date;
     end?: Date;
-  }): Promise<string> {
+  }): AsyncGenerator<string> {
     const { start, end } = options;
 
-    const sensors = await this.getAllSensorsByDate({ start, end });
+    const sensors = this.getAllSensorsByDate({ start, end });
     let csvString =
       'date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4';
+    yield csvString;
 
-    sensors.forEach(row => {
-      csvString += `
-${row.date.toISOString()}`;
+    for await (const row of sensors) {
+      csvString = `\n${row.date.toISOString()}`;
       csvString += `,${row.people ? row.people.people : '-'}`;
       csvString += `,${row.co2[0] ? row.co2[0].co2 : '-'}`;
 
@@ -128,9 +130,8 @@ ${row.date.toISOString()}`;
       }
 
       csvString += `,${humString},${tempString},${lightString}`;
-    });
-
-    return csvString;
+      yield csvString;
+    }
   }
 
   async savePeopleNumber(
