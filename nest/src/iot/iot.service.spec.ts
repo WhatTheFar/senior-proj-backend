@@ -234,11 +234,12 @@ describe('IotService', () => {
             });
           });
 
-          describe('saveMultiSensors called with device 3 on the same date', () => {
+          describe('saveMultiSensors called with device 3 on the same date, and light = 0', () => {
             beforeEach(async () => {
               await service.saveMultiSensors(date, {
                 ...multiPayload,
                 device: 3,
+                light: 0,
               });
             });
 
@@ -262,7 +263,7 @@ describe('IotService', () => {
 
               const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
 ${tomorrowDate.toISOString()},${people},-,-,-,-,-,-,-,-,-,-,-,-,-
-${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-`;
+${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${0},-`;
 
               it('Then it should return a csv w/ 1 row', () => {
                 expect(csv).toEqual(expectedCsv);
@@ -305,7 +306,7 @@ ${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-
 
                 const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
 ${tomorrowDate.toISOString()},${people},-,-,-,-,-,-,-,-,-,-,-,-,-
-${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${light},${light}`;
+${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${0},${light}`;
 
                 it('Then it should return a csv w/ 1 row', () => {
                   expect(csv).toEqual(expectedCsv);
@@ -332,7 +333,7 @@ ${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${tem
                 });
 
                 const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
-${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${light},${light}`;
+${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${0},${light}`;
 
                 it('Then it should return a csv w/ 1 row', () => {
                   expect(csv).toEqual(expectedCsv);

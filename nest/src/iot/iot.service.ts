@@ -129,9 +129,9 @@ export class IotService {
           tempString += '-';
           lightString += '-';
         } else {
-          humString += multi.hum || '-';
-          tempString += multi.temp || '-';
-          lightString += multi.light || '-';
+          humString += multi.hum;
+          tempString += multi.temp;
+          lightString += multi.light;
           i++;
         }
       }
