@@ -188,6 +188,77 @@ ${date.toISOString()},${people},${co2},-,-,${hum},-,-,-,${temp},-,-,-,${light},-
                 expect(csv).toEqual(expectedCsv);
               });
             });
+
+            describe('saveMultiSensors called with device 1, 2, and 4 on the same date', () => {
+              beforeEach(async () => {
+                await service.saveMultiSensors(date, {
+                  ...multiPayload,
+                  device: 1,
+                });
+                await service.saveMultiSensors(date, {
+                  ...multiPayload,
+                  device: 2,
+                });
+                await service.saveMultiSensors(date, {
+                  ...multiPayload,
+                  device: 4,
+                });
+              });
+
+              describe('When getAllSensorsCSV called with date inclusively', () => {
+                let csv: string = '';
+                beforeEach(async () => {
+                  const tomorrowWithExtraMin = new Date(tomorrowDate);
+                  tomorrowWithExtraMin.setMinutes(
+                    tomorrowWithExtraMin.getMinutes() + 1,
+                  );
+
+                  const generator = service.getAllSensorsCSV({
+                    start: date,
+                    end: tomorrowWithExtraMin,
+                  });
+
+                  for await (const e of generator) {
+                    csv += e;
+                  }
+                });
+
+                const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
+${tomorrowDate.toISOString()},${people},-,-,-,-,-,-,-,-,-,-,-,-,-
+${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${light},${light}`;
+
+                it('Then it should return a csv w/ 1 row', () => {
+                  expect(csv).toEqual(expectedCsv);
+                });
+              });
+
+              describe('When getAllSensorsCSV called with date inclusively and skipping invalid data', () => {
+                let csv: string = '';
+                beforeEach(async () => {
+                  const tomorrowWithExtraMin = new Date(tomorrowDate);
+                  tomorrowWithExtraMin.setMinutes(
+                    tomorrowWithExtraMin.getMinutes() + 1,
+                  );
+
+                  const generator = service.getAllSensorsCSV({
+                    start: date,
+                    end: tomorrowWithExtraMin,
+                    skip: true,
+                  });
+
+                  for await (const e of generator) {
+                    csv += e;
+                  }
+                });
+
+                const expectedCsv = `date,people,co2,hum1,hum2,hum3,hum4,temp1,temp2,temp3,temp4,light1,light2,light3,light4
+${date.toISOString()},${people},${co2},${hum},${hum},${hum},${hum},${temp},${temp},${temp},${temp},${light},${light},${light},${light}`;
+
+                it('Then it should return a csv w/ 1 row', () => {
+                  expect(csv).toEqual(expectedCsv);
+                });
+              });
+            });
           });
 
           describe('When getAllSensorsByDate called with range from today(inclusive) to tomorrow(exclusive)', () => {

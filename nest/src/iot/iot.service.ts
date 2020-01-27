@@ -84,8 +84,9 @@ export class IotService {
   async *getAllSensorsCSV(options?: {
     start?: Date;
     end?: Date;
+    skip?: boolean;
   }): AsyncGenerator<string> {
-    const { start, end } = options;
+    const { start, end, skip } = { skip: false, ...options };
 
     const sensors = this.getAllSensorsByDate({ start, end });
     let csvString =
@@ -93,6 +94,12 @@ export class IotService {
     yield csvString;
 
     for await (const row of sensors) {
+      if (
+        skip &&
+        (row.multi.length !== 4 || row.co2.length !== 1 || row.people == null)
+      ) {
+        continue;
+      }
       csvString = `\n${row.date.toISOString()}`;
       csvString += `,${row.people ? row.people.people : '-'}`;
       csvString += `,${row.co2[0] ? row.co2[0].co2 : '-'}`;
