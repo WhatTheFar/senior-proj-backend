@@ -4,6 +4,8 @@ services:
   traefik:
     image: 'traefik:v2.0.0'
     container_name: 'traefik'
+    networks:
+      - backend
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
@@ -54,6 +56,8 @@ services:
     image: senior-proj-dashboard
     container_name: senior-proj-dashboard-prod
     build: dashboard
+    networks:
+      - backend
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.dashboard.rule=Host(`seniorproj.thinc.in.th`)'
