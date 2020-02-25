@@ -1,8 +1,8 @@
 {
-	"name": "senior-proj-data-processing",
+	"name": "senior-proj-backend",
 	"version": "1.0.0",
 	"description": "",
-	"repository": "git@github.com:WhatTheFar/senior-proj-data-processing.git",
+	"repository": "https://github.com/WhatTheFar/senior-proj-backend",
 	"author": "WhatTheFar <jakpat.m@gmail.com>",
 	"license": "MIT",
 	"private": true,
