@@ -1,0 +1,24 @@
+{
+	"name": "senior-proj-data-processing",
+	"version": "1.0.0",
+	"description": "",
+	"repository": "git@github.com:WhatTheFar/senior-proj-data-processing.git",
+	"author": "WhatTheFar <jakpat.m@gmail.com>",
+	"license": "MIT",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"build": "lerna run build",
+		"format": "lerna run format"
+	},
+	"dependencies": {
+		"lerna": "3.20.2"
+	},
+	"devDependencies": {},
+	"resolutions": {
+		"fsevents": "1.2.9",
+		"**/fsevents": "1.2.9"
+	}
+}
