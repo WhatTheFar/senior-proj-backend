@@ -21,8 +21,8 @@ echo "$diff"
 echo
 echo
 
-dashboard=`echo "$diff" | grep -E '^dashboard'`
-nest=`echo "$diff" | grep -E '^nest'`
+dashboard=`echo "$diff" | grep -E '^packages/dashboard'`
+nest=`echo "$diff" | grep -E '^packages/nest'`
 
 if [[ -n "$dashboard" ]]; then
     echo --- Building dashboard ---

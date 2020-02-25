@@ -31,22 +31,22 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+            - dependencies-v1.0-{{ .Branch }}-{{ checksum "packages/nest/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependencies-v1.0-{{ .Branch }}
 
       - run:
           name: Install Dependencies
-          command: cd nest && yarn install
+          command: cd packages/nest && yarn install
 
       - run:
           name: Running Test
-          command: cd nest && yarn test
+          command: cd packages/nest && yarn test
 
       - save_cache:
           paths:
-            - nest/node_modules
-          key: dependencies-v1.0-{{ .Branch }}-{{ checksum "nest/package.json" }}
+            - packages/nest/node_modules
+          key: dependencies-v1.0-{{ .Branch }}-{{ checksum "packages/nest/package.json" }}
 
   build:
     machine: true
