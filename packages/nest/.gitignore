@@ -1,6 +1,6 @@
 .env
 .env.test
-microgear
+/microgear
 
 # compiled output
 /dist
