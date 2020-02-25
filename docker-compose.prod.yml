@@ -55,7 +55,7 @@ services:
   dashboard:
     image: senior-proj-dashboard
     container_name: senior-proj-dashboard-prod
-    build: dashboard
+    build: packages/dashboard
     networks:
       - backend
     labels:
@@ -67,7 +67,7 @@ services:
 
   backend:
     container_name: senior-proj-backend-prod
-    build: nest
+    build: packages/nest
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.backend_insecure.rule=Host(`seniorproj.thinc.in.th`) && PathPrefix(`/iot`, `/api`)'
@@ -79,4 +79,4 @@ services:
     environment:
       NODE_ENV: production
     volumes:
-      - ./nest/microgear:/app/microgear
+      - ./packages/nest/microgear:/app/microgear
