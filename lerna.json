@@ -1,5 +1,9 @@
 {
-	"packages": ["packages/*"],
+	"packages": [
+		"packages/nest",
+		"packages/log-processing",
+		"packages/data-cleaning"
+	],
 	"npmClient": "yarn",
 	"useWorkspaces": true,
 	"version": "0.0.0"
