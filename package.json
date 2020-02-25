@@ -8,7 +8,8 @@
 	"private": true,
 	"workspaces": [
 		"packages/nest",
-		"packages/log-processing"
+		"packages/log-processing",
+		"packages/data-cleaning"
 	],
 	"scripts": {
 		"build": "lerna run build",
