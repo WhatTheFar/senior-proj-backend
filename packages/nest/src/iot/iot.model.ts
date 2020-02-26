@@ -48,9 +48,11 @@ export interface PeopleData {
   people: number;
 }
 
-export interface IIot extends mongoose.Document {
+export interface IIot {
   date: Date;
   people?: PeopleData;
   co2: CO2Sensor[];
   multi: MultiSensor[];
 }
+
+export interface IIotDoc extends mongoose.Document, IIot {}

@@ -1,7 +1,7 @@
 import { IotDto } from './iot.dto';
 import { MicroGearService } from './../microgear/microgear.service';
 import { Injectable } from '@nestjs/common';
-import { IOT_MODEL, IIot, MultiSensor } from './iot.model';
+import { IOT_MODEL, IIotDoc, MultiSensor } from './iot.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -16,7 +16,7 @@ const NETPIE_PEOPLE_COUNT_SET_TOPIC = '/people/set';
 export class IotService {
   constructor(
     private readonly microgearService: MicroGearService,
-    @InjectModel(IOT_MODEL) private readonly iotModel: Model<IIot>,
+    @InjectModel(IOT_MODEL) private readonly iotModel: Model<IIotDoc>,
   ) {}
 
   publishTimeSyncronization(time: Date) {
@@ -77,7 +77,7 @@ export class IotService {
       .cursor();
 
     for await (const doc of cursor) {
-      yield (doc as IIot).toObject();
+      yield (doc as IIotDoc).toObject();
     }
   }
 
