@@ -21,10 +21,12 @@
     "prettier": "prettier --config ./.prettierrc --write \"./src/**/*.ts\""
   },
   "dependencies": {
+    "@senior-proj/backend": "1.0.0",
     "@senior-proj/log-processing": "1.0.0",
     "cli-progress": "^3.6.0",
     "dotenv": "^8.1.0",
     "glob": "^7.1.6",
+    "mongodb": "^3.5.4",
     "mongoose": "^5.7.1",
     "rimraf": "^2.6.2"
   },
