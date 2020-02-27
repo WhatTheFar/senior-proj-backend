@@ -18,9 +18,5 @@
 	"dependencies": {
 		"lerna": "3.20.2"
 	},
-	"devDependencies": {},
-	"resolutions": {
-		"fsevents": "1.2.9",
-		"**/fsevents": "1.2.9"
-	}
+	"devDependencies": {}
 }
