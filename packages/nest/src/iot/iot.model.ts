@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const IOT_MODEL = 'iot';
+export const IOT_COLLECTION = 'sensors';
 
 export const IotSchema = new mongoose.Schema({
   date: { type: Date, required: true },

@@ -6,12 +6,12 @@ import { IotController } from './iot.controller';
 import { ScheduleModule } from 'nest-schedule';
 import { IotService } from './iot.service';
 import { IotScheduleService } from './iot-schedule.service';
-import { IotSchema, IOT_MODEL } from './iot.model';
+import { IotSchema, IOT_MODEL, IOT_COLLECTION } from './iot.model';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: IOT_MODEL, schema: IotSchema, collection: 'sensors' },
+      { name: IOT_MODEL, schema: IotSchema, collection: IOT_COLLECTION },
     ]),
     MicroGearModule,
     ConfigModule,
