@@ -53,7 +53,8 @@ jobs:
           key: dependencies-v1.0-{{ .Branch }}-{{ checksum "packages/nest/package.json" }}
 
   build:
-    machine: true
+    docker:
+      - image: cimg/base:2020.01
     working_directory: ~/repo
     steps:
       - checkout
