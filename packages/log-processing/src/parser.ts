@@ -1,7 +1,7 @@
 import {
-  SetPeopleLogCollection,
-  ResetBgLogCollection,
-  NetpieLogCollection,
+  SetPeopleLogModel,
+  ResetBgLogModel,
+  NetpieLogModel,
 } from './model/netpie';
 
 export const parseLogDateToDateTime = (onlyDate: string, onlyTime: string) => {
@@ -25,7 +25,7 @@ export const parseLog = async (logString: string) => {
     );
 
     if (topic === '/seniorproj/people/bg') {
-      await ResetBgLogCollection.updateOne(
+      await ResetBgLogModel.updateOne(
         { date },
         {
           $setOnInsert: {
@@ -39,7 +39,7 @@ export const parseLog = async (logString: string) => {
         },
       );
     } else if (topic === '/seniorproj/people/set') {
-      await SetPeopleLogCollection.updateOne(
+      await SetPeopleLogModel.updateOne(
         { date },
         {
           $setOnInsert: {
@@ -53,7 +53,7 @@ export const parseLog = async (logString: string) => {
         },
       );
     } else {
-      // await NetpieLogCollection.updateOne(
+      // await NetpieLogModel.updateOne(
       //   { date },
       //   {
       //     $setOnInsert: {

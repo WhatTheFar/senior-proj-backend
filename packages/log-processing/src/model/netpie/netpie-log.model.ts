@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import * as mongodb from 'mongodb';
 import { strEnum } from '../../string-enum';
 
 export const NETPIE_LOG_COLLECTION = 'netpie-log';
@@ -24,19 +23,14 @@ const NetpieLogSchema = new mongoose.Schema(
   { discriminatorKey: 'type' },
 );
 
-export interface NetpieLog {
+export interface NetpieLog extends mongoose.Document {
   date: Date;
   topic: string;
   payload: string;
   type: NetpieLogType;
 }
 
-export interface NetpieLogDoc extends mongoose.Document, NetpieLog {}
-
-export const NetpieLogModel = mongoose.model<NetpieLogDoc>(
+export const NetpieLogModel = mongoose.model<NetpieLog>(
   NETPIE_LOG_COLLECTION,
   NetpieLogSchema,
 );
-
-export const NetpieLogCollection: mongodb.Collection<NetpieLog> =
-  NetpieLogModel.collection;
