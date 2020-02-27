@@ -1,9 +1,8 @@
 import { SetPeopleLog, SetPeopleLogModel } from '@senior-proj/log-processing';
 import * as mongodb from 'mongodb';
-import * as cliProgress from 'cli-progress';
 
 import { IIot, IotModel, IotCollection } from './../model/iot.model';
-import { mongooseCursorAsyncGenerator } from './utils';
+import { mongooseCursorAsyncGenerator, createSingleProgressBar } from './utils';
 
 export const processSetPeoplelogs = async () => {
   const query = SetPeopleLogModel.find().sort({ date: 1 });
@@ -11,12 +10,7 @@ export const processSetPeoplelogs = async () => {
   const count = await query.countDocuments();
   const cursor = query.cursor();
 
-  const progressBar = new cliProgress.SingleBar({
-    format:
-      '[{bar}] {percentage}% | ETA: {eta_formatted} | Time: {duration_formatted} | {value}/{total}',
-    barCompleteChar: '=',
-    barIncompleteChar: '-',
-  });
+  const progressBar = createSingleProgressBar();
   progressBar.start(count, 0);
 
   const generator = mongooseCursorAsyncGenerator(cursor);
