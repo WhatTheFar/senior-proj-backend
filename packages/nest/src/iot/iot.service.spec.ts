@@ -1,6 +1,6 @@
 import { IotDto } from './iot.dto';
 import { ConfigService } from './../config/config.service';
-import { IOT_MODEL, IotSchema, IIot } from './iot.model';
+import { IOT_MODEL, IotSchema, IIotDoc } from './iot.model';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { MicroGearModule } from './../microgear/microgear.module';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -39,7 +39,7 @@ const baseCo2 = {
 
 describe('IotService', () => {
   let service: IotService;
-  let iotModel: Model<IIot>;
+  let iotModel: Model<IIotDoc>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -56,7 +56,7 @@ describe('IotService', () => {
     }).compile();
 
     service = module.get<IotService>(IotService);
-    iotModel = module.get<Model<IIot>>(getModelToken(IOT_MODEL));
+    iotModel = module.get<Model<IIotDoc>>(getModelToken(IOT_MODEL));
   });
 
   it('should be defined', () => {
