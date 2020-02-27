@@ -66,7 +66,7 @@ const main = async () => {
   console.log('Connected to Mongo');
   console.log();
 
-  const paths = glob.sync('./../log/app.log*');
+  const paths = glob.sync('./../../log/app.log*');
   for (const path of paths) {
     await processLogFile(path);
   }
