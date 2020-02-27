@@ -36,6 +36,10 @@ jobs:
             - dependencies-v1.0-{{ .Branch }}
 
       - run:
+          name: Disable Yarn Workspaces
+          command: rm package.json
+
+      - run:
           name: Install Dependencies
           command: cd packages/nest && yarn install
 
