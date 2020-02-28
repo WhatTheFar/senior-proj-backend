@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export const connectMongo = async () => {
+export async function connectMongo() {
   const host = process.env.DB_HOST;
   const user = process.env.DB_USER;
   const password = process.env.DB_PASSWORD;
@@ -14,8 +14,8 @@ export const connectMongo = async () => {
 
   await mongoose.connect(uri, options);
   // return mongoose.connection;
-};
+}
 
-export const disconnectMongo = async () => {
+export async function disconnectMongo() {
   await mongoose.disconnect();
-};
+}
