@@ -4,9 +4,34 @@ import * as dotenv from 'dotenv';
 import * as readline from 'readline';
 import * as glob from 'glob';
 import * as cliProgress from 'cli-progress';
+import * as yargs from 'yargs';
 
 import { connectMongo, disconnectMongo } from './db';
 import { parseLog } from './parser';
+
+const argv = yargs
+  .option('dry-run', {
+    describe: 'Tell the script to not actually process the data',
+    boolean: true,
+  })
+  .help('help').argv;
+
+function skipIfDryRun<T extends CallableFunction>(fn: T, log?: boolean): T {
+  const newFn: any = (...args: any[]) => {
+    if (log) {
+      console.log(
+        `=> skipped '${fn.name || '{anonymous}'}' function ${
+          args.length !== 0 ? `with ${args}` : ''
+        }`,
+      );
+    }
+    if (!argv['dry-run']) {
+      return fn(...args);
+    }
+    return;
+  };
+  return newFn;
+}
 
 const countLineInFile = async (filePath: string) => {
   const readStream = fs.createReadStream(filePath);
@@ -47,7 +72,7 @@ const processLogFile = async (filePath: string) => {
   for await (const line of readInterface) {
     try {
       // console.log(line);
-      await parseLog(line);
+      await skipIfDryRun(parseLog)(line);
       progressBar.increment();
     } catch (error) {
       console.log(error);
@@ -62,7 +87,7 @@ const main = async () => {
 
   console.log();
   console.log('Connecting Mongo...');
-  await connectMongo();
+  await skipIfDryRun(connectMongo, false)();
   console.log('Connected to Mongo');
   console.log();
 
@@ -73,7 +98,7 @@ const main = async () => {
 
   console.log();
   console.log('Disconnecting Mongo...');
-  await disconnectMongo();
+  await skipIfDryRun(disconnectMongo, false)();
   console.log('Disconnected to Mongo');
   console.log();
 };
