@@ -3,6 +3,12 @@ import * as dotenv from 'dotenv';
 
 import { connectMongo, disconnectMongo } from './db';
 import { processSetPeoplelogs } from './process/set-people-log';
+import {
+  processNegativeWithin1HourFlag,
+  processNegativeBeforeSetPeopleFlag,
+  processNegativeFlag,
+  resetAllNegativeCountFlag,
+} from './process/negative-count';
 
 const main = async () => {
   dotenv.config();
@@ -14,6 +20,12 @@ const main = async () => {
   console.log();
 
   await processSetPeoplelogs();
+  console.log();
+
+  await resetAllNegativeCountFlag();
+  await processNegativeWithin1HourFlag();
+  await processNegativeBeforeSetPeopleFlag();
+  await processNegativeFlag();
 
   console.log();
   console.log('Disconnecting Mongo...');

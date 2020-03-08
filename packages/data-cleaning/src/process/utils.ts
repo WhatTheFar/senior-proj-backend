@@ -18,3 +18,31 @@ export function createSingleProgressBar() {
   });
   return progressBar;
 }
+
+export async function iterateAsyncGeneratorWithProgressBar<T>(
+  generator: AsyncGenerator<T>,
+  count: number,
+  callback: (element: T) => Promise<void>,
+) {
+  const progressBar = createSingleProgressBar();
+  progressBar.start(count, 0);
+
+  for await (const element of generator) {
+    await callback(element);
+
+    await progressBar.increment();
+  }
+  await progressBar.stop();
+}
+
+export async function iterateMongoQueryWithProgressBar<
+  DocType extends mongoose.Document
+>(
+  query: mongoose.DocumentQuery<DocType[], DocType>,
+  callback: (element: DocType) => Promise<void>,
+) {
+  const count = await query.countDocuments();
+  const cursor = query.cursor();
+  const generator = mongooseCursorAsyncGenerator(cursor);
+  await iterateAsyncGeneratorWithProgressBar(generator, count, callback);
+}
