@@ -24,11 +24,6 @@ export const processSetPeoplelogs = async () => {
 };
 
 const processEachLog = async (log: SetPeopleLog) => {
-  await new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, 200);
-  });
   const initialDate = log.date;
   const finalDate = new Date(initialDate);
   finalDate.setHours(initialDate.getHours() + 1);
