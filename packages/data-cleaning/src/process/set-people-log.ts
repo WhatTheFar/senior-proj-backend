@@ -1,26 +1,25 @@
-import { SetPeopleLog, SetPeopleLogModel } from '@senior-proj/log-processing';
+import {
+  SetPeopleLog,
+  SetPeopleLogDoc,
+  SetPeopleLogModel,
+} from '@senior-proj/log-processing';
 import * as mongodb from 'mongodb';
 
-import { IIot, IotModel, IotCollection } from './../model/iot.model';
-import { mongooseCursorAsyncGenerator, createSingleProgressBar } from './utils';
+import { IIot, IotCollection } from './../model/iot.model';
+import { iterateMongoQueryWithProgressBar } from './utils';
 
 export const processSetPeoplelogs = async () => {
   const query = SetPeopleLogModel.find().sort({ date: 1 });
   // .limit(0);
   const count = await query.countDocuments();
-  const cursor = query.cursor();
 
-  const progressBar = createSingleProgressBar();
-  progressBar.start(count, 0);
-
-  const generator = mongooseCursorAsyncGenerator(cursor);
-  for await (const doc of generator) {
-    const log: SetPeopleLog = doc.toObject();
-    await processEachLog(log);
-
-    await progressBar.increment();
-  }
-  await progressBar.stop();
+  await iterateMongoQueryWithProgressBar(
+    query,
+    async (doc: SetPeopleLogDoc) => {
+      const log: SetPeopleLog = doc.toObject();
+      await processEachLog(log);
+    },
+  );
 };
 
 const processEachLog = async (log: SetPeopleLog) => {
