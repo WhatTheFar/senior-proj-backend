@@ -3,7 +3,6 @@ import * as mongodb from 'mongodb';
 
 import { IIot, IIotDoc, IotModel, IotCollection } from './../model/iot.model';
 import {
-  mongooseCursorAsyncGenerator,
   createSingleProgressBar,
   iterateMongoQueryWithProgressBar,
 } from './utils';
