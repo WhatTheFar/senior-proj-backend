@@ -32,6 +32,6 @@ const processEachLog = async (log: SetPeopleLog) => {
     date: { $gt: initialDate, $lte: finalDate },
   };
   const updateResult = await IotCollection.updateMany(filter, {
-    $set: { 'flag.afterSetPeople1Hour': null },
+    $set: { 'flag.afterSetPeople1Hour': true },
   });
 };
