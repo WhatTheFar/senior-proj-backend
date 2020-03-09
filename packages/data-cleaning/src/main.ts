@@ -12,6 +12,7 @@ import {
   processNegativeFlag,
   resetAllNegativeCountFlag,
 } from './process/negative-count';
+import { processAtNightFlag } from './process/at-night';
 
 const main = async () => {
   dotenv.config();
@@ -30,6 +31,10 @@ const main = async () => {
   await processNegativeWithin1HourFlag();
   await processNegativeBeforeSetPeopleFlag();
   await processNegativeFlag();
+  console.log();
+
+  await processAtNightFlag();
+  console.log();
 
   console.log();
   console.log('Disconnecting Mongo...');
