@@ -31,6 +31,22 @@ const processEachLog = async (log: SetPeopleLog) => {
     date: { $gt: initialDate, $lte: finalDate },
   };
   const updateResult = await IotCollection.updateMany(filter, {
-    $set: { 'flag.afterSetPeople1Hour': true },
+    $set: { 'flag.aftSetPplW/n1H': true },
   });
 };
+
+export async function resetAllSetPeopleFlag() {
+  // tslint:disable-next-line: no-console
+  console.log('Unsetting all set people flag');
+
+  const updateResult = await IotCollection.updateMany(
+    {},
+    {
+      $unset: {
+        // Deprecated flag of 'flag.aftSetPplW/n1H'
+        'flag.afterSetPeople1Hour': '',
+        'flag.aftSetPplW/n1H': '',
+      },
+    },
+  );
+}

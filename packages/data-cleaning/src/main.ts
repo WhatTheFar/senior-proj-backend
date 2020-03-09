@@ -2,7 +2,10 @@
 import * as dotenv from 'dotenv';
 
 import { connectMongo, disconnectMongo } from './db';
-import { processSetPeoplelogs } from './process/set-people-log';
+import {
+  processSetPeoplelogs,
+  resetAllSetPeopleFlag,
+} from './process/set-people-log';
 import {
   processNegativeWithin1HourFlag,
   processNegativeBeforeSetPeopleFlag,
@@ -19,6 +22,7 @@ const main = async () => {
   console.log('Connected to Mongo');
   console.log();
 
+  await resetAllSetPeopleFlag();
   await processSetPeoplelogs();
   console.log();
 
