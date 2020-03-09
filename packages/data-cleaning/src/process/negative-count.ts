@@ -154,6 +154,7 @@ export async function resetAllNegativeCountFlag() {
       $unset: {
         'flag.aftNegCntW/n1H': '',
         'flag.aftNegCntBfrSetPpl': '',
+        // Deprecated flag of 'flag.neg'
         'flag.aftNegCntTilPos': '',
         'flag.neg': '',
       },
