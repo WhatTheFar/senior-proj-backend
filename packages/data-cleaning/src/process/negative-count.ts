@@ -145,6 +145,9 @@ export async function processNegativeFlag() {
 }
 
 export async function resetAllNegativeCountFlag() {
+  // tslint:disable-next-line: no-console
+  console.log('Unsetting all negative people flag');
+
   const updateResult = await IotCollection.updateMany(
     {},
     {
