@@ -46,3 +46,17 @@ export async function iterateMongoQueryWithProgressBar<
   const generator = mongooseCursorAsyncGenerator(cursor);
   await iterateAsyncGeneratorWithProgressBar(generator, count, callback);
 }
+
+export async function executeWithOneStepProgressBar(fn: () => Promise<void>) {
+  const progressBar = createSingleProgressBar();
+  progressBar.start(1, 0);
+
+  try {
+    await fn();
+    await progressBar.increment();
+    await progressBar.stop();
+  } catch (error) {
+    await progressBar.stop();
+    throw error;
+  }
+}
