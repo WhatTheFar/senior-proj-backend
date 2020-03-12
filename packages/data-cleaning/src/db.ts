@@ -19,3 +19,23 @@ export const connectMongo = async () => {
 export const disconnectMongo = async () => {
   await mongoose.disconnect();
 };
+
+export async function withMongo(fn: () => Promise<void>) {
+  console.log();
+  console.log('Connecting Mongo...');
+  await connectMongo();
+  console.log('Connected to Mongo');
+  console.log();
+
+  try {
+    await fn();
+  } catch (error) {
+    throw error;
+  }
+
+  console.log();
+  console.log('Disconnecting Mongo...');
+  await disconnectMongo();
+  console.log('Disconnected to Mongo');
+  console.log();
+}
