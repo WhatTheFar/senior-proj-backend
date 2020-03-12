@@ -28,7 +28,8 @@
     "glob": "^7.1.6",
     "mongodb": "^3.5.4",
     "mongoose": "^5.7.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "yargs": "^15.3.0"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.4.2",
