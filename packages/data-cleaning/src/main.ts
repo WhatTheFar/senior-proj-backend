@@ -19,6 +19,7 @@ import { resetAllFlag } from './process/general';
 dotenv.config();
 
 // tslint:disable: no-shadowed-variable
+// tslint:disable: no-empty
 const argv = yargs
   .command(
     'reset-all',
