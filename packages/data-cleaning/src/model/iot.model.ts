@@ -2,6 +2,8 @@ import * as backend from '@senior-proj/backend';
 import * as mongoose from 'mongoose';
 import * as mongodb from 'mongodb';
 
+export { IOT_COLLECTION } from '@senior-proj/backend';
+
 const IotSchema = backend.IotSchema.clone();
 IotSchema.add({
   flag: {
