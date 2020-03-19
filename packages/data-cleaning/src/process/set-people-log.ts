@@ -6,7 +6,7 @@ import {
 import * as mongodb from 'mongodb';
 
 import { IIot, IotCollection } from './../model/iot.model';
-import { iterateMongoQueryWithProgressBar } from './utils';
+import { iterateMongoQueryWithProgressBar } from '../utils';
 
 export const processSetPeoplelogs = async () => {
   const query = SetPeopleLogModel.find().sort({ date: 1 });

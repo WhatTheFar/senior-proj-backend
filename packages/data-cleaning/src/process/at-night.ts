@@ -13,7 +13,7 @@ import {
   iterateMongoQueryWithProgressBar,
   executeWithOneStepProgressBar,
   mongooseCursorAsyncGenerator,
-} from './utils';
+} from '../utils';
 
 export async function processAtNightFlag() {
   // tslint:disable-next-line: no-console

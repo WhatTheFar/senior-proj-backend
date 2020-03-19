@@ -1,5 +1,5 @@
 import { IIot, IIotDoc, IotModel, IotCollection } from './../model/iot.model';
-import { executeWithOneStepProgressBar } from './utils';
+import { executeWithOneStepProgressBar } from '../utils';
 
 export async function resetAllFlag() {
   // tslint:disable-next-line: no-console

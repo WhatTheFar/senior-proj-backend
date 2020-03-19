@@ -5,7 +5,7 @@ import { IIot, IIotDoc, IotModel, IotCollection } from './../model/iot.model';
 import {
   createSingleProgressBar,
   iterateMongoQueryWithProgressBar,
-} from './utils';
+} from '../utils';
 
 const MILLISECONDS = {
   SECOND: 1000,
