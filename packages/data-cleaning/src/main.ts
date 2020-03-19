@@ -15,6 +15,7 @@ import {
 } from './process/negative-count';
 import { processAtNightFlag, resetAtNightFlag } from './process/at-night';
 import { resetAllFlag } from './process/general';
+import { generateCSV } from './csv';
 
 dotenv.config();
 
@@ -80,6 +81,58 @@ const argv = yargs
       )
       .demandCommand();
   })
+  .command('gen [name]', 'Genrate data', yargs => {
+    yargs
+      .command(
+        'csv',
+        'CSV file',
+        yargs => {
+          return yargs
+            .option('start', {
+              alias: 'start-date',
+              describe: 'Set start date',
+              string: true,
+            })
+            .option('end', {
+              alias: 'end-date',
+              describe: 'Set end date (exclusive)',
+              string: true,
+            });
+        },
+        async argv => {
+          let start: Date | undefined;
+          let end: Date | undefined;
+          if (argv.start != null) {
+            start = parseDateOrUndefined(argv.start);
+            if (start == null) {
+              throw new Error('Invalid date string in --start');
+            }
+          }
+          if (argv.end != null) {
+            end = parseDateOrUndefined(argv.end);
+            if (end == null) {
+              throw new Error('Invalid date string in --end');
+            }
+          }
+          await withMongo(async () => {
+            await generateCSV({ start, end });
+          });
+        },
+      )
+      .demandCommand();
+  })
   .demandCommand()
   .version(false)
   .help().argv;
+
+function isDate(d: unknown): d is Date {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
+function parseDateOrUndefined(dateString: string): Date | undefined {
+  // if (dateString == null) {
+  //   return undefined;
+  // }
+  const date = new Date(dateString);
+  return isDate(date) ? date : undefined;
+}

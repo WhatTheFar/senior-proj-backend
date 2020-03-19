@@ -1,5 +1,12 @@
+import { existsSync, mkdirSync } from 'fs';
 import * as mongoose from 'mongoose';
 import * as cliProgress from 'cli-progress';
+
+export function mkdirpSync(dir: string) {
+  if (!existsSync(dir)) {
+    mkdirSync(dir);
+  }
+}
 
 export async function* mongooseCursorAsyncGenerator<
   DocType extends mongoose.Document
