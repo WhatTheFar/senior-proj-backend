@@ -45,6 +45,8 @@ async function* getAllSensorsByDate(options?: {
   }
 }
 
+const NA_VALUE = '';
+
 async function* getAllSensorsCSV(options?: {
   start?: Date;
   end?: Date;
@@ -65,8 +67,8 @@ async function* getAllSensorsCSV(options?: {
       continue;
     }
     csvString = `\n${row.date.toISOString()}`;
-    csvString += `,${row.people ? row.people.people : '-'}`;
-    csvString += `,${row.co2[0] ? row.co2[0].co2 : '-'}`;
+    csvString += `,${row.people ? row.people.people : NA_VALUE}`;
+    csvString += `,${row.co2[0] ? row.co2[0].co2 : NA_VALUE}`;
 
     const sortedMulti =
       row.multi != null
@@ -89,9 +91,9 @@ async function* getAllSensorsCSV(options?: {
         lightString += ',';
       }
       if (multi == null || device < multi.device) {
-        humString += '-';
-        tempString += '-';
-        lightString += '-';
+        humString += NA_VALUE;
+        tempString += NA_VALUE;
+        lightString += NA_VALUE;
       } else {
         humString += multi.hum;
         tempString += multi.temp;
