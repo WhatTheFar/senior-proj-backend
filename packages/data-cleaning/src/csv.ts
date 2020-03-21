@@ -6,7 +6,7 @@ import * as stream from 'stream';
 import { IIot, IIotDoc, IotModel, IotCollection } from './model/iot.model';
 import { createSingleProgressBar, mkdirpSync } from './utils';
 
-async function countSensorsByDate(options?: { start?: Date; end?: Date }) {
+function sensorsQueryCondition(options?: { start?: Date; end?: Date }) {
   const { start, end } = { ...options };
 
   const dateMatch = {} as any;
@@ -17,7 +17,33 @@ async function countSensorsByDate(options?: { start?: Date; end?: Date }) {
     dateMatch.$lt = end;
   }
 
-  const count = await IotModel.find({ date: dateMatch }).countDocuments();
+  const flagMatch = {
+    // at-night
+    'flag.atNight': { $ne: true },
+
+    // negative-count
+    // 'flag.aftNegCntW/n1H': { $ne: true },
+    'flag.aftNegCntBfrSetPpl': { $ne: true },
+    'flag.neg': { $ne: true },
+
+    // set-people-log
+    'flag.aftSetPplW/n1H': { $eq: true },
+  };
+
+  let condition = {} as any;
+  if (Object.entries(dateMatch).length !== 0) {
+    condition.date = dateMatch;
+  }
+  if (Object.entries(flagMatch).length !== 0) {
+    condition = { ...condition, ...flagMatch };
+  }
+
+  return condition;
+}
+
+async function countSensorsByDate(options?: { start?: Date; end?: Date }) {
+  const condition = sensorsQueryCondition(options);
+  const count = await IotModel.find(condition).countDocuments();
   return count;
 }
 
@@ -25,17 +51,9 @@ async function* getAllSensorsByDate(options?: {
   start?: Date;
   end?: Date;
 }): AsyncGenerator<IIot> {
-  const { start, end } = { ...options };
+  const condition = sensorsQueryCondition(options);
 
-  const dateMatch = {} as any;
-  if (start != null) {
-    dateMatch.$gte = start;
-  }
-  if (end != null) {
-    dateMatch.$lt = end;
-  }
-
-  const cursor = IotModel.find({ date: dateMatch })
+  const cursor = IotModel.find(condition)
     .sort({ date: -1 })
     .cursor();
 
