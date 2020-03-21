@@ -138,9 +138,8 @@ async function* writeIterableToFile(
       // (B)
       // Handle backpressure
       await once(writable, 'drain');
-    } else {
-      yield;
     }
+    yield;
   }
   writable.end(); // (C)
   // Wait until done. Throws if there are errors.
