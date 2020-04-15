@@ -22,17 +22,28 @@ export const processSetPeoplelogs = async () => {
   );
 };
 
+const HOUR_FLAG_MAP: { [flag: string]: number } = {
+  'flag.aftSetPplW/n1H': 1,
+  'flag.aftSetPplW/n2H': 2,
+};
+
 const processEachLog = async (log: SetPeopleLog) => {
   const initialDate = log.date;
-  const finalDate = new Date(initialDate);
-  finalDate.setHours(initialDate.getHours() + 1);
+  for (const flag in HOUR_FLAG_MAP) {
+    if (HOUR_FLAG_MAP.hasOwnProperty(flag)) {
+      const hour = HOUR_FLAG_MAP[flag];
 
-  const filter: mongodb.FilterQuery<IIot> = {
-    date: { $gt: initialDate, $lte: finalDate },
-  };
-  const updateResult = await IotCollection.updateMany(filter, {
-    $set: { 'flag.aftSetPplW/n1H': true },
-  });
+      const finalDate = new Date(initialDate);
+      finalDate.setHours(initialDate.getHours() + hour);
+
+      const filter: mongodb.FilterQuery<IIot> = {
+        date: { $gt: initialDate, $lte: finalDate },
+      };
+      const updateResult = await IotCollection.updateMany(filter, {
+        $set: { [flag]: true },
+      });
+    }
+  }
 };
 
 export async function resetAllSetPeopleFlag() {
@@ -46,6 +57,7 @@ export async function resetAllSetPeopleFlag() {
         // Deprecated flag of 'flag.aftSetPplW/n1H'
         'flag.afterSetPeople1Hour': '',
         'flag.aftSetPplW/n1H': '',
+        'flag.aftSetPplW/n2H': '',
       },
     },
   );

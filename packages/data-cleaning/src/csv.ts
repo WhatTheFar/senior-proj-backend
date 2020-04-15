@@ -28,6 +28,7 @@ function sensorsQueryCondition(options?: { start?: Date; end?: Date }) {
 
     // set-people-log
     'flag.aftSetPplW/n1H': { $eq: true },
+    'flag.aftSetPplW/n2H': { $eq: true },
   };
 
   let condition = {} as any;
