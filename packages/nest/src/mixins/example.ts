@@ -4,34 +4,31 @@ import { applyMixins } from './mixins';
 
 // Disposable Mixin
 class Disposable {
-  isDisposed: boolean;
-  dispose() {
-    this.isDisposed = true;
-  }
+	public isDisposed: boolean;
+	public dispose() {
+		this.isDisposed = true;
+	}
 }
 
 // Activatable Mixin
 class Activatable {
-  isActive: boolean;
-  activate() {
-    this.isActive = true;
-  }
-  deactivate() {
-    this.isActive = false;
-  }
+	public isActive: boolean;
+	public activate() {
+		this.isActive = true;
+	}
+	public deactivate() {
+		this.isActive = false;
+	}
 }
 
 class SmartObject {
-  constructor() {
-    setInterval(
-      () => console.log(this.isActive + ' : ' + this.isDisposed),
-      500,
-    );
-  }
+	constructor() {
+		setInterval(() => console.log(this.isActive + ' : ' + this.isDisposed), 500);
+	}
 
-  interact() {
-    this.activate();
-  }
+	public interact() {
+		this.activate();
+	}
 }
 
 interface SmartObject extends Disposable, Activatable {}
